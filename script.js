@@ -127,4 +127,19 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
   });
+
+  /* ── BS / NO BS Toggle ───────────────────────────── */
+  const bsToggle = document.getElementById("bsToggle");
+  
+  // Load saved preference
+  const saved = localStorage.getItem("nobs-mode");
+  if (saved === "true") {
+    document.body.classList.add("nobs-mode");
+  }
+  
+  bsToggle?.addEventListener("click", () => {
+    document.body.classList.toggle("nobs-mode");
+    const isNobs = document.body.classList.contains("nobs-mode");
+    localStorage.setItem("nobs-mode", isNobs);
+  });
 });

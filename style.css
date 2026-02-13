@@ -533,7 +533,7 @@ section {
 
 .about-stats {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(3, 1fr);
   gap: 1rem;
 }
 
@@ -801,6 +801,85 @@ section {
 .contact-link:hover svg { opacity: 1; }
 
 /* ═══════════════════════════════════════════════════
+   BS / NO BS TOGGLE
+   ═══════════════════════════════════════════════════ */
+.bs-toggle-wrap {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  margin-left: 1rem;
+}
+
+.bs-label {
+  font-size: .7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  color: var(--muted);
+  transition: color .3s;
+  user-select: none;
+}
+
+/* Active label highlight */
+body:not(.nobs-mode) .bs-toggle-wrap .bs-label:first-child {
+  color: var(--accent);
+}
+
+body.nobs-mode .bs-toggle-wrap .bs-label:last-child {
+  color: var(--accent);
+}
+
+.bs-toggle {
+  position: relative;
+  width: 40px;
+  height: 22px;
+  border-radius: 100px;
+  border: 1px solid var(--border-hi);
+  background: var(--surface2);
+  cursor: pointer;
+  padding: 0;
+  transition: border-color .3s, background .3s;
+}
+
+.bs-toggle:hover {
+  border-color: var(--accent);
+}
+
+.bs-toggle-thumb {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--muted);
+  transition: transform .35s cubic-bezier(.34, 1.56, .64, 1),
+              background .3s;
+}
+
+body.nobs-mode .bs-toggle-thumb {
+  transform: translateX(18px);
+  background: var(--accent);
+}
+
+body.nobs-mode .bs-toggle {
+  border-color: rgba(167, 139, 250, .4);
+  background: rgba(167, 139, 250, .1);
+}
+
+/* ── BS / NO BS content switching ──────────────────── */
+.nobs-text { display: none; }
+.bs-text   { display: inline; }
+
+body.nobs-mode .nobs-text { display: inline; }
+body.nobs-mode .bs-text   { display: none; }
+
+/* Smooth text transition */
+.bs-text, .nobs-text {
+  transition: opacity .3s ease;
+}
+
+/* ═══════════════════════════════════════════════════
    FOOTER
    ═══════════════════════════════════════════════════ */
 footer {
@@ -872,6 +951,12 @@ footer {
   section { padding: 5rem 0; }
   nav { padding: 0 1.25rem; }
 
+  .bs-toggle-wrap { 
+    position: absolute;
+    right: 3.5rem;
+    margin-left: 0;
+  }
+
   .menu-toggle { display: flex; flex-direction: column; }
 
   .nav-links {
@@ -918,4 +1003,5 @@ footer {
 @media (max-width: 480px) {
   .hero h1 { font-size: clamp(2.2rem, 10vw, 3rem); }
   .about-stats { grid-template-columns: 1fr; }
+  .bs-toggle-wrap { right: 3rem; }
 }
