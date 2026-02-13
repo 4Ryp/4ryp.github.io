@@ -1,1 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>4Ryp &mdash; Developer Portfolio</title>
+  <meta name="description" content="Developer portfolio of 4Ryp. Building clean, performant digital experiences." />
+  <meta name="theme-color" content="#07070a" />
 
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- Preloader -->
+  <div class="preloader" aria-hidden="true">
+    <span class="preloader-logo">4Ryp</span>
+  </div>
+
+  <!-- Cursor glow (desktop only) -->
+  <div class="cursor-glow" aria-hidden="true"></div>
+
+  <!-- Grain texture overlay -->
+  <div class="grain" aria-hidden="true"></div>
+
+  <!-- ─── Navigation ──────────────────────────────── -->
+  <nav>
+    <a href="#hero" class="logo">4Ryp</a>
+    <button class="menu-toggle" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="nav-links">
+      <a href="#about">About</a>
+      <a href="#projects">Projects</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </nav>
+
+  <!-- ─── Hero ────────────────────────────────────── -->
+  <section class="hero" id="hero">
+    <div class="hero-bg" aria-hidden="true">
+      <div class="hero-orb hero-orb-1"></div>
+      <div class="hero-orb hero-orb-2"></div>
+      <div class="hero-orb hero-orb-3"></div>
+      <div class="hero-grid-pattern"></div>
+    </div>
+
+    <div class="container hero-content">
+      <div class="hero-badge hero-enter hero-enter-d1">
+        <span class="dot"></span>
+        Available for work
+      </div>
+
+      <h1 class="hero-enter hero-enter-d2">
+        I build things<br />for the <span class="gradient">web</span>.
+      </h1>
+
+      <p class="hero-description hero-enter hero-enter-d3">
+        Developer focused on crafting clean, performant, and user-centric
+        digital experiences. I turn ideas into polished products.
+      </p>
+
+      <div class="hero-actions hero-enter hero-enter-d4">
+        <a href="#projects" class="btn btn-primary">
+          View Work
+          <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M7 17l9.2-9.2M7 7h10v10"/></svg>
+        </a>
+        <a href="#contact" class="btn btn-secondary">Get in Touch</a>
+      </div>
+
+      <div class="scroll-indicator hero-enter hero-enter-d5">
+        <span class="scroll-line"></span>
+        Scroll to explore
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── About ───────────────────────────────────── -->
+  <section id="about">
+    <div class="container">
+      <p class="section-label reveal">About</p>
+      <h2 class="section-title reveal reveal-d1">A bit about me</h2>
+      <p class="section-desc reveal reveal-d2">
+        Detail-obsessed developer who builds things that feel great to use.
+      </p>
+
+      <div class="about-content">
+        <div class="about-text reveal reveal-d3">
+          <p>
+            I care about detail, performance, and building things that genuinely
+            help people. I enjoy working across the full stack &mdash; from pixel-perfect
+            interfaces to solid backend architecture.
+          </p>
+          <p>
+            Every project is a chance to learn something new. I write clean code,
+            ship real products, and constantly push myself to improve.
+          </p>
+        </div>
+
+        <div class="about-stats">
+          <div class="stat-card reveal reveal-d2">
+            <div class="stat-number">3+</div>
+            <div class="stat-label">Years Experience</div>
+          </div>
+          <div class="stat-card reveal reveal-d3">
+            <div class="stat-number">15+</div>
+            <div class="stat-label">Projects Built</div>
+          </div>
+          <div class="stat-card reveal reveal-d4">
+            <div class="stat-number">&infin;</div>
+            <div class="stat-label">Curiosity</div>
+          </div>
+          <div class="stat-card reveal reveal-d5">
+            <div class="stat-number">24/7</div>
+            <div class="stat-label">Problem Solving</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Skills -->
+      <div class="skills-section">
+        <p class="section-label reveal">Tech Stack</p>
+        <div class="skills-grid">
+          <span class="skill-chip reveal reveal-d1">JavaScript</span>
+          <span class="skill-chip reveal reveal-d1">TypeScript</span>
+          <span class="skill-chip reveal reveal-d2">React</span>
+          <span class="skill-chip reveal reveal-d2">Next.js</span>
+          <span class="skill-chip reveal reveal-d3">Node.js</span>
+          <span class="skill-chip reveal reveal-d3">Python</span>
+          <span class="skill-chip reveal reveal-d4">HTML &amp; CSS</span>
+          <span class="skill-chip reveal reveal-d4">Tailwind</span>
+          <span class="skill-chip reveal reveal-d5">Git</span>
+          <span class="skill-chip reveal reveal-d5">REST APIs</span>
+          <span class="skill-chip reveal reveal-d6">SQL</span>
+          <span class="skill-chip reveal reveal-d6">Figma</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Projects ────────────────────────────────── -->
+  <section id="projects">
+    <div class="container">
+      <p class="section-label reveal">Projects</p>
+      <h2 class="section-title reveal reveal-d1">Selected work</h2>
+      <p class="section-desc reveal reveal-d2">
+        Things I've built recently. Each one pushed me to learn something new.
+      </p>
+
+      <div class="projects-grid">
+
+        <a href="#" class="project-card reveal reveal-d1">
+          <div class="project-info">
+            <h3 class="project-name">Project Alpha</h3>
+            <p class="project-desc">
+              A full-stack web application with real-time features, clean UI,
+              and smooth performance under load.
+            </p>
+            <div class="project-tags">
+              <span class="project-tag">React</span>
+              <span class="project-tag">Node.js</span>
+              <span class="project-tag">WebSocket</span>
+            </div>
+          </div>
+          <div class="project-arrow">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M7 17l9.2-9.2M7 7h10v10"/></svg>
+          </div>
+        </a>
+
+        <a href="#" class="project-card reveal reveal-d2">
+          <div class="project-info">
+            <h3 class="project-name">Project Beta</h3>
+            <p class="project-desc">
+              An interactive data dashboard that transforms complex datasets
+              into clear, actionable insights.
+            </p>
+            <div class="project-tags">
+              <span class="project-tag">TypeScript</span>
+              <span class="project-tag">D3.js</span>
+              <span class="project-tag">Python</span>
+            </div>
+          </div>
+          <div class="project-arrow">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M7 17l9.2-9.2M7 7h10v10"/></svg>
+          </div>
+        </a>
+
+        <a href="#" class="project-card reveal reveal-d3">
+          <div class="project-info">
+            <h3 class="project-name">Project Gamma</h3>
+            <p class="project-desc">
+              A sleek developer tool that automates repetitive tasks and
+              integrates seamlessly into existing workflows.
+            </p>
+            <div class="project-tags">
+              <span class="project-tag">Python</span>
+              <span class="project-tag">CLI</span>
+              <span class="project-tag">REST API</span>
+            </div>
+          </div>
+          <div class="project-arrow">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M7 17l9.2-9.2M7 7h10v10"/></svg>
+          </div>
+        </a>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Contact ─────────────────────────────────── -->
+  <section id="contact">
+    <div class="container">
+      <div class="contact-card reveal">
+        <h2 class="contact-title">Let's work together</h2>
+        <p class="contact-desc">Got an idea, a project, or just want to connect? I'd love to hear from you.</p>
+        <div class="contact-links">
+          <a href="https://github.com/4Ryp" target="_blank" rel="noopener" class="contact-link">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .3a12 12 0 00-3.8 23.38c.6.11.82-.26.82-.58v-2.02c-3.34.73-4.04-1.61-4.04-1.61a3.18 3.18 0 00-1.33-1.76c-1.09-.74.08-.73.08-.73a2.52 2.52 0 011.84 1.24 2.56 2.56 0 003.5 1 2.56 2.56 0 01.76-1.61c-2.67-.3-5.47-1.33-5.47-5.93a4.64 4.64 0 011.24-3.22 4.3 4.3 0 01.12-3.18s1-.33 3.3 1.23a11.42 11.42 0 016.01 0c2.3-1.56 3.3-1.23 3.3-1.23a4.3 4.3 0 01.12 3.18 4.64 4.64 0 011.24 3.22c0 4.61-2.81 5.63-5.48 5.92a2.86 2.86 0 01.82 2.22v3.29c0 .32.21.7.82.58A12 12 0 0012 .3z"/></svg>
+            GitHub
+          </a>
+          <a href="mailto:hello@example.com" class="contact-link">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 7l-10 7L2 7"/></svg>
+            Email
+          </a>
+          <a href="https://linkedin.com" target="_blank" rel="noopener" class="contact-link">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.95v5.66H9.34V9h3.41v1.56h.05a3.74 3.74 0 013.37-1.85c3.6 0 4.27 2.37 4.27 5.45v6.29zM5.34 7.43a2.06 2.06 0 11-.01-4.13 2.06 2.06 0 01.01 4.13zM7.12 20.45H3.56V9h3.56v11.45zM22.23 0H1.77A1.75 1.75 0 000 1.73v20.54A1.75 1.75 0 001.77 24h20.46A1.75 1.75 0 0024 22.27V1.73A1.75 1.75 0 0022.23 0z"/></svg>
+            LinkedIn
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Footer ──────────────────────────────────── -->
+  <footer>
+    <div class="container footer-inner">
+      <span>&copy; 2026 4Ryp</span>
+      <span>Built with care</span>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="script.js"></script>
+
+</body>
+</html>
