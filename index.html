@@ -3,270 +3,344 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Ryptix &mdash; Developer Portfolio</title>
-  <meta name="description" content="Ryptix. I build stuff I wanna use." />
-  <meta name="theme-color" content="#07070a" />
+  <title>CASE FILE: Ryptix</title>
+  <meta name="description" content="Case File #4RYP — Subject: Ryptix. Classification: Public." />
+  <meta name="theme-color" content="#1a1710" />
 
-  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-
-  <!-- Styles -->
-  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="dossier.css" />
 </head>
 <body>
 
   <!-- Preloader -->
-  <div class="preloader" aria-hidden="true">
-    <span class="preloader-logo">Ryptix</span>
+  <div class="preloader" id="preloader">
+    <div class="preloader-inner">
+      <span class="preloader-text">ACCESSING FILE</span>
+      <span class="blink">_</span>
+    </div>
   </div>
-
-  <!-- Cursor glow (desktop only) -->
-  <div class="cursor-glow" aria-hidden="true"></div>
-
-  <!-- Grain texture overlay -->
-  <div class="grain" aria-hidden="true"></div>
 
   <!-- ─── Navigation ──────────────────────────────── -->
   <nav>
-    <a href="#hero" class="logo">Ryptix</a>
+    <a href="#cover" class="nav-logo">CASE #4RYP</a>
     <button class="menu-toggle" aria-label="Toggle menu">
       <span></span><span></span><span></span>
     </button>
     <div class="nav-links">
-      <a href="#about">About</a>
-      <a href="#projects">Projects</a>
-      <a href="#contact">Contact</a>
-    </div>
-    <div class="bs-toggle-wrap">
-      <span class="bs-label">BS</span>
-      <button class="bs-toggle" id="bsToggle" aria-label="Toggle BS mode">
-        <span class="bs-toggle-thumb"></span>
-      </button>
-      <span class="bs-label">NO BS</span>
+      <a href="#about">PROFILE</a>
+      <a href="#projects">EVIDENCE</a>
+      <a href="#skills">TOOLS</a>
+      <a href="#contact">CONTACT</a>
     </div>
   </nav>
 
-  <!-- ─── Hero ────────────────────────────────────── -->
-  <section class="hero" id="hero">
-    <div class="hero-bg" aria-hidden="true">
-      <div class="hero-orb hero-orb-1"></div>
-      <div class="hero-orb hero-orb-2"></div>
-      <div class="hero-orb hero-orb-3"></div>
-      <div class="hero-grid-pattern"></div>
-    </div>
+  <!-- ═══════════════════════════════════════════════
+       COVER PAGE
+       ═══════════════════════════════════════════════ -->
+  <section class="page cover" id="cover">
+    <div class="page-paper">
+      <div class="binder-strip"></div>
 
-    <div class="container hero-content">
-      <div class="hero-badge hero-enter hero-enter-d1">
-        <span class="dot"></span>
-        <span class="bs-text">Available for work</span>
-        <span class="nobs-text">Probably busy gaming</span>
+      <div class="doc-header">
+        <span>CASE FILE #4RYP-2026</span>
+        <span>PAGE 1 OF 5</span>
       </div>
 
-      <h1 class="hero-enter hero-enter-d2">
-        <span class="bs-text">I build things<br />for the <span class="gradient">web</span>.</span>
-        <span class="nobs-text">Hi, I make <span class="gradient">stuff</span>.</span>
-      </h1>
+      <div class="stamp stamp-classified">CLASSIFIED</div>
 
-      <p class="hero-description hero-enter hero-enter-d3">
-        <span class="bs-text">Developer focused on crafting clean, performant, and user-centric
-        digital experiences. I turn ideas into polished products.</span>
-        <span class="nobs-text">I'm an 18 year old dispassionate uncaring developer. I build things
-        I'd personally use and think others would enjoy using too. That's about it.</span>
+      <div class="cover-meta">
+        <div class="meta-row"><span class="meta-label">DATE OPENED:</span> 2021</div>
+        <div class="meta-row"><span class="meta-label">STATUS:</span> ACTIVE</div>
+        <div class="meta-row"><span class="meta-label">CLEARANCE:</span> <strong>PUBLIC</strong></div>
+      </div>
+
+      <h1 class="cover-title">SUBJECT:<br /><span class="subject-name">RYPTIX</span></h1>
+
+      <p class="cover-role">
+        <span class="bs-text">SOFTWARE DEVELOPER &mdash; FULL STACK ENGINEER</span>
+        <span class="nobs-text">SOME GUY WHO MAKES STUFF ON THE INTERNET</span>
       </p>
 
-      <div class="hero-actions hero-enter hero-enter-d4">
-        <a href="#projects" class="btn btn-primary">
-          View Work
-          <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M7 17l9.2-9.2M7 7h10v10"/></svg>
-        </a>
-        <a href="#contact" class="btn btn-secondary">Get in Touch</a>
+      <div class="divider"></div>
+
+      <!-- ═══ THE BIG TOGGLE ═══ -->
+      <div class="file-select">
+        <div class="file-select-header">&#9888; SELECT FILE VERSION</div>
+        <div class="file-select-buttons">
+          <button class="file-btn" id="btnSanitized" data-active="true">
+            <div class="file-btn-stamp">SANITIZED</div>
+            <div class="file-btn-sub">Cleaned for public viewing.<br />Standard corporate fluff applied.</div>
+            <div class="file-btn-active-tag">&#10003; ACTIVE</div>
+          </button>
+          <div class="file-select-or">OR</div>
+          <button class="file-btn file-btn-raw" id="btnRaw">
+            <div class="file-btn-stamp">RAW FILE</div>
+            <div class="file-btn-sub">Unredacted. No filter.<br />Read at your own discretion.</div>
+            <div class="file-btn-active-tag">&#10003; ACTIVE</div>
+          </button>
+        </div>
       </div>
 
-      <div class="scroll-indicator hero-enter hero-enter-d5">
-        <span class="scroll-line"></span>
-        <span class="bs-text">Scroll to explore</span>
-        <span class="nobs-text">Scroll down or don't</span>
+      <div class="divider"></div>
+
+      <div class="stamp stamp-small" style="transform:rotate(3deg); align-self:flex-end;">
+        <span class="bs-text">APPROVED FOR DISTRIBUTION</span>
+        <span class="nobs-text">NOBODY ASKED FOR THIS</span>
       </div>
+
+      <div class="scroll-hint">&#8595; SCROLL TO OPEN FILE &#8595;</div>
     </div>
   </section>
 
-  <!-- ─── About ───────────────────────────────────── -->
-  <section id="about">
-    <div class="container">
-      <p class="section-label reveal">About</p>
-      <h2 class="section-title reveal reveal-d1">A bit about me</h2>
-      <p class="section-desc reveal reveal-d2">
-        <span class="bs-text">Detail-obsessed developer who builds things that feel great to use.</span>
-        <span class="nobs-text">I build things I wanna use. Sometimes others like them too.</span>
-      </p>
+  <!-- ═══════════════════════════════════════════════
+       SUBJECT PROFILE
+       ═══════════════════════════════════════════════ -->
+  <section class="page" id="about">
+    <div class="page-paper">
+      <div class="binder-strip"></div>
 
-      <div class="about-content">
-        <div class="about-text reveal reveal-d3">
-          <span class="bs-text">
-            <p>
-              I care about detail, performance, and building things that genuinely
-              help people. I enjoy working across the full stack &mdash; from pixel-perfect
-              interfaces to solid backend architecture.
-            </p>
-          </span>
-          <span class="nobs-text">
-            <p>
-              18 y/o. Been coding for about 5 years now. I make stuff I'd personally
-              want to use and hope other people find it useful too. Not here to impress
-              anyone, just here to build.
-            </p>
-          </span>
-        </div>
-
-        <div class="about-stats">
-          <div class="stat-card reveal reveal-d2">
-            <div class="stat-number">5+</div>
-            <div class="stat-label">Years Experience</div>
-          </div>
-          <div class="stat-card reveal reveal-d3">
-            <div class="stat-number">30+</div>
-            <div class="stat-label">Projects Built</div>
-          </div>
-          <div class="stat-card reveal reveal-d4">
-            <div class="stat-number">18</div>
-            <div class="stat-label">Age</div>
-          </div>
-        </div>
+      <div class="doc-header">
+        <span>SUBJECT PROFILE</span>
+        <span>PAGE 2 OF 5</span>
       </div>
 
-      <!-- Skills -->
-      <div class="skills-section">
-        <p class="section-label reveal">Tech Stack</p>
-        <div class="skills-grid">
-          <span class="skill-chip reveal reveal-d1">JavaScript</span>
-          <span class="skill-chip reveal reveal-d1">TypeScript</span>
-          <span class="skill-chip reveal reveal-d2">React</span>
-          <span class="skill-chip reveal reveal-d2">Next.js</span>
-          <span class="skill-chip reveal reveal-d3">Node.js</span>
-          <span class="skill-chip reveal reveal-d3">Python</span>
-          <span class="skill-chip reveal reveal-d4">HTML &amp; CSS</span>
-          <span class="skill-chip reveal reveal-d4">Tailwind</span>
-          <span class="skill-chip reveal reveal-d5">Git</span>
-          <span class="skill-chip reveal reveal-d5">REST APIs</span>
-          <span class="skill-chip reveal reveal-d6">SQL</span>
-          <span class="skill-chip reveal reveal-d6">Figma</span>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ─── Projects ────────────────────────────────── -->
-  <section id="projects">
-    <div class="container">
-      <p class="section-label reveal">Projects</p>
-      <h2 class="section-title reveal reveal-d1">
-        <span class="bs-text">Selected work</span>
-        <span class="nobs-text">Stuff I made</span>
+      <h2 class="section-heading reveal">
+        <span class="heading-num">01</span>
+        <span class="bs-text">SUBJECT PROFILE</span>
+        <span class="nobs-text">WHO IS THIS GUY</span>
       </h2>
-      <p class="section-desc reveal reveal-d2">
-        <span class="bs-text">Things I've built recently. Each one pushed me to learn something new.</span>
-        <span class="nobs-text">Things I actually built and use. Or used to use. You get the idea.</span>
-      </p>
 
-      <div class="projects-grid">
+      <div class="profile-grid reveal reveal-d1">
+        <div class="profile-card">
+          <table class="profile-table">
+            <tr><td class="field-label">CODENAME</td><td class="field-value">Ryptix</td></tr>
+            <tr><td class="field-label">AGE</td><td class="field-value">18</td></tr>
+            <tr>
+              <td class="field-label">STATUS</td>
+              <td class="field-value">
+                <span class="bs-text">Active &mdash; Available for engagements</span>
+                <span class="nobs-text">Active &mdash; Probably gaming though</span>
+              </td>
+            </tr>
+            <tr><td class="field-label">YEARS ACTIVE</td><td class="field-value">5+</td></tr>
+            <tr><td class="field-label">KNOWN OPERATIONS</td><td class="field-value">30+</td></tr>
+          </table>
+        </div>
 
-        <a href="#" class="project-card reveal reveal-d1">
-          <div class="project-info">
-            <h3 class="project-name">Project Alpha</h3>
-            <p class="project-desc">
-              A full-stack web application with real-time features, clean UI,
-              and smooth performance under load.
-            </p>
-            <div class="project-tags">
-              <span class="project-tag">React</span>
-              <span class="project-tag">Node.js</span>
-              <span class="project-tag">WebSocket</span>
-            </div>
-          </div>
-          <div class="project-arrow">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M7 17l9.2-9.2M7 7h10v10"/></svg>
-          </div>
-        </a>
-
-        <a href="#" class="project-card reveal reveal-d2">
-          <div class="project-info">
-            <h3 class="project-name">Project Beta</h3>
-            <p class="project-desc">
-              An interactive data dashboard that transforms complex datasets
-              into clear, actionable insights.
-            </p>
-            <div class="project-tags">
-              <span class="project-tag">TypeScript</span>
-              <span class="project-tag">D3.js</span>
-              <span class="project-tag">Python</span>
-            </div>
-          </div>
-          <div class="project-arrow">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M7 17l9.2-9.2M7 7h10v10"/></svg>
-          </div>
-        </a>
-
-        <a href="#" class="project-card reveal reveal-d3">
-          <div class="project-info">
-            <h3 class="project-name">Project Gamma</h3>
-            <p class="project-desc">
-              A sleek developer tool that automates repetitive tasks and
-              integrates seamlessly into existing workflows.
-            </p>
-            <div class="project-tags">
-              <span class="project-tag">Python</span>
-              <span class="project-tag">CLI</span>
-              <span class="project-tag">REST API</span>
-            </div>
-          </div>
-          <div class="project-arrow">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M7 17l9.2-9.2M7 7h10v10"/></svg>
-          </div>
-        </a>
-
-      </div>
-    </div>
-  </section>
-
-  <!-- ─── Contact ─────────────────────────────────── -->
-  <section id="contact">
-    <div class="container">
-      <div class="contact-card reveal">
-        <h2 class="contact-title">
-          <span class="bs-text">Let's work together</span>
-          <span class="nobs-text">Say hi or whatever</span>
-        </h2>
-        <p class="contact-desc">
-          <span class="bs-text">Got an idea, a project, or just want to connect? I'd love to hear from you.</span>
-          <span class="nobs-text">Wanna talk, collab, or just hang out? Hit me up.</span>
-        </p>
-        <div class="contact-links">
-          <a href="https://github.com/4Ryp" target="_blank" rel="noopener" class="contact-link">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .3a12 12 0 00-3.8 23.38c.6.11.82-.26.82-.58v-2.02c-3.34.73-4.04-1.61-4.04-1.61a3.18 3.18 0 00-1.33-1.76c-1.09-.74.08-.73.08-.73a2.52 2.52 0 011.84 1.24 2.56 2.56 0 003.5 1 2.56 2.56 0 01.76-1.61c-2.67-.3-5.47-1.33-5.47-5.93a4.64 4.64 0 011.24-3.22 4.3 4.3 0 01.12-3.18s1-.33 3.3 1.23a11.42 11.42 0 016.01 0c2.3-1.56 3.3-1.23 3.3-1.23a4.3 4.3 0 01.12 3.18 4.64 4.64 0 011.24 3.22c0 4.61-2.81 5.63-5.48 5.92a2.86 2.86 0 01.82 2.22v3.29c0 .32.21.7.82.58A12 12 0 0012 .3z"/></svg>
-            GitHub
-          </a>
-          <a href="https://discord.com" target="_blank" rel="noopener" class="contact-link">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.37a19.79 19.79 0 00-4.885-1.515.074.074 0 00-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 00-5.487 0 12.64 12.64 0 00-.617-1.25.077.077 0 00-.079-.037A19.74 19.74 0 003.677 4.37a.07.07 0 00-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 00.031.057 19.9 19.9 0 005.993 3.03.078.078 0 00.084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 00-.041-.106 13.11 13.11 0 01-1.872-.892.077.077 0 01-.008-.128 10.2 10.2 0 00.372-.292.074.074 0 01.077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 01.078.01c.12.098.246.198.373.292a.077.077 0 01-.006.127 12.3 12.3 0 01-1.873.892.077.077 0 00-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 00.084.028 19.84 19.84 0 006.002-3.03.077.077 0 00.032-.054c.5-5.177-.838-9.674-3.549-13.66a.06.06 0 00-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.095 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.095 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>
-            Discord
-          </a>
+        <div class="profile-summary">
+          <div class="field-label">SUMMARY</div>
+          <p class="bs-text">
+            A detail-oriented full-stack developer with 5+ years of experience
+            building performant, user-centric digital products. Specializes in
+            web technologies with a proven track record of delivering high-quality
+            solutions across diverse project requirements.
+          </p>
+          <p class="nobs-text">
+            18 y/o. Been coding for about 5 years. I build things I'd personally
+            want to use and hope other people find them useful too. Not here to
+            impress anyone, just here to build.
+          </p>
         </div>
       </div>
+
+      <div class="stamp stamp-small" style="transform:rotate(-2deg); margin-top:2rem;">
+        <span class="bs-text">VERIFIED</span>
+        <span class="nobs-text">CLOSE ENOUGH</span>
+      </div>
     </div>
   </section>
 
-  <!-- ─── Footer ──────────────────────────────────── -->
-  <footer>
-    <div class="container footer-inner">
-      <span>&copy; 2026 Ryptix</span>
-      <span class="bs-text">Built with care</span>
-      <span class="nobs-text">It works. Probably.</span>
+  <!-- ═══════════════════════════════════════════════
+       EVIDENCE LOCKER
+       ═══════════════════════════════════════════════ -->
+  <section class="page" id="projects">
+    <div class="page-paper">
+      <div class="binder-strip"></div>
+
+      <div class="doc-header">
+        <span>EVIDENCE LOCKER</span>
+        <span>PAGE 3 OF 5</span>
+      </div>
+
+      <h2 class="section-heading reveal">
+        <span class="heading-num">02</span>
+        <span class="bs-text">EVIDENCE LOCKER</span>
+        <span class="nobs-text">STUFF I MADE</span>
+      </h2>
+
+      <p class="section-note reveal reveal-d1">
+        <span class="bs-text">Documented operations and their outcomes. Click to expand full reports.</span>
+        <span class="nobs-text">Things I actually built. Some of them even work.</span>
+      </p>
+
+      <!-- Exhibit A -->
+      <details class="exhibit reveal reveal-d2" open>
+        <summary class="exhibit-header">
+          <span class="exhibit-label">EXHIBIT A</span>
+          <span class="exhibit-title">Project Alpha</span>
+          <span class="exhibit-toggle">&#9656; FULL REPORT</span>
+        </summary>
+        <div class="exhibit-body">
+          <div class="exhibit-field">
+            <span class="field-label">DESCRIPTION</span>
+            <p class="bs-text">A full-stack web application with real-time features, clean UI, and smooth performance under load.</p>
+            <p class="nobs-text">Real-time web app. It works fast and looks decent.</p>
+          </div>
+          <div class="exhibit-tags">
+            <span class="etag">React</span>
+            <span class="etag">Node.js</span>
+            <span class="etag">WebSocket</span>
+          </div>
+          <a href="#" class="exhibit-link">ACCESS FILES &rarr;</a>
+        </div>
+      </details>
+
+      <!-- Exhibit B -->
+      <details class="exhibit reveal reveal-d3">
+        <summary class="exhibit-header">
+          <span class="exhibit-label">EXHIBIT B</span>
+          <span class="exhibit-title">Project Beta</span>
+          <span class="exhibit-toggle">&#9656; FULL REPORT</span>
+        </summary>
+        <div class="exhibit-body">
+          <div class="exhibit-field">
+            <span class="field-label">DESCRIPTION</span>
+            <p class="bs-text">An interactive data dashboard that transforms complex datasets into clear, actionable insights.</p>
+            <p class="nobs-text">Data dashboard thing. Makes numbers look pretty.</p>
+          </div>
+          <div class="exhibit-tags">
+            <span class="etag">TypeScript</span>
+            <span class="etag">D3.js</span>
+            <span class="etag">Python</span>
+          </div>
+          <a href="#" class="exhibit-link">ACCESS FILES &rarr;</a>
+        </div>
+      </details>
+
+      <!-- Exhibit C -->
+      <details class="exhibit reveal reveal-d4">
+        <summary class="exhibit-header">
+          <span class="exhibit-label">EXHIBIT C</span>
+          <span class="exhibit-title">Project Gamma</span>
+          <span class="exhibit-toggle">&#9656; FULL REPORT</span>
+        </summary>
+        <div class="exhibit-body">
+          <div class="exhibit-field">
+            <span class="field-label">DESCRIPTION</span>
+            <p class="bs-text">A sleek developer tool that automates repetitive tasks and integrates seamlessly into existing workflows.</p>
+            <p class="nobs-text">CLI tool that does boring stuff for you. Saved me hours.</p>
+          </div>
+          <div class="exhibit-tags">
+            <span class="etag">Python</span>
+            <span class="etag">CLI</span>
+            <span class="etag">REST API</span>
+          </div>
+          <a href="#" class="exhibit-link">ACCESS FILES &rarr;</a>
+        </div>
+      </details>
     </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════
+       TOOLS RECOVERED
+       ═══════════════════════════════════════════════ -->
+  <section class="page" id="skills">
+    <div class="page-paper">
+      <div class="binder-strip"></div>
+
+      <div class="doc-header">
+        <span>TOOLS RECOVERED</span>
+        <span>PAGE 4 OF 5</span>
+      </div>
+
+      <h2 class="section-heading reveal">
+        <span class="heading-num">03</span>
+        <span class="bs-text">TOOLS &amp; TECHNOLOGIES</span>
+        <span class="nobs-text">TOOLS RECOVERED FROM SUBJECT</span>
+      </h2>
+
+      <div class="tools-grid reveal reveal-d1">
+        <div class="tool-item">JavaScript</div>
+        <div class="tool-item">TypeScript</div>
+        <div class="tool-item">React</div>
+        <div class="tool-item">Next.js</div>
+        <div class="tool-item">Node.js</div>
+        <div class="tool-item">Python</div>
+        <div class="tool-item">HTML &amp; CSS</div>
+        <div class="tool-item">Tailwind</div>
+        <div class="tool-item">Git</div>
+        <div class="tool-item">REST APIs</div>
+        <div class="tool-item">SQL</div>
+        <div class="tool-item">Figma</div>
+      </div>
+
+      <!-- Coffee stain decoration -->
+      <div class="coffee-stain" aria-hidden="true"></div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════
+       SUBMIT A TIP / CONTACT
+       ═══════════════════════════════════════════════ -->
+  <section class="page" id="contact">
+    <div class="page-paper">
+      <div class="binder-strip"></div>
+
+      <div class="doc-header">
+        <span>SECURE CHANNELS</span>
+        <span>PAGE 5 OF 5</span>
+      </div>
+
+      <h2 class="section-heading reveal">
+        <span class="heading-num">04</span>
+        <span class="bs-text">SUBMIT A TIP</span>
+        <span class="nobs-text">SAY HI OR WHATEVER</span>
+      </h2>
+
+      <p class="section-note reveal reveal-d1">
+        <span class="bs-text">For inquiries, collaboration proposals, or project discussions, use the secure channels below.</span>
+        <span class="nobs-text">Wanna talk, collab, or just hang out? Hit me up through these.</span>
+      </p>
+
+      <div class="channel-grid reveal reveal-d2">
+        <a href="https://github.com/4Ryp" target="_blank" rel="noopener" class="channel-card">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="channel-icon"><path d="M12 .3a12 12 0 00-3.8 23.38c.6.11.82-.26.82-.58v-2.02c-3.34.73-4.04-1.61-4.04-1.61a3.18 3.18 0 00-1.33-1.76c-1.09-.74.08-.73.08-.73a2.52 2.52 0 011.84 1.24 2.56 2.56 0 003.5 1 2.56 2.56 0 01.76-1.61c-2.67-.3-5.47-1.33-5.47-5.93a4.64 4.64 0 011.24-3.22 4.3 4.3 0 01.12-3.18s1-.33 3.3 1.23a11.42 11.42 0 016.01 0c2.3-1.56 3.3-1.23 3.3-1.23a4.3 4.3 0 01.12 3.18 4.64 4.64 0 011.24 3.22c0 4.61-2.81 5.63-5.48 5.92a2.86 2.86 0 01.82 2.22v3.29c0 .32.21.7.82.58A12 12 0 0012 .3z"/></svg>
+          <div class="channel-info">
+            <div class="channel-name">GITHUB</div>
+            <div class="channel-handle">@4Ryp</div>
+          </div>
+          <span class="channel-arrow">&rarr;</span>
+        </a>
+
+        <a href="https://discord.com" target="_blank" rel="noopener" class="channel-card">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="channel-icon"><path d="M20.317 4.37a19.79 19.79 0 00-4.885-1.515.074.074 0 00-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 00-5.487 0 12.64 12.64 0 00-.617-1.25.077.077 0 00-.079-.037A19.74 19.74 0 003.677 4.37a.07.07 0 00-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 00.031.057 19.9 19.9 0 005.993 3.03.078.078 0 00.084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 00-.041-.106 13.11 13.11 0 01-1.872-.892.077.077 0 01-.008-.128 10.2 10.2 0 00.372-.292.074.074 0 01.077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 01.078.01c.12.098.246.198.373.292a.077.077 0 01-.006.127 12.3 12.3 0 01-1.873.892.077.077 0 00-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 00.084.028 19.84 19.84 0 006.002-3.03.077.077 0 00.032-.054c.5-5.177-.838-9.674-3.549-13.66a.06.06 0 00-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.095 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.095 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>
+          <div class="channel-info">
+            <div class="channel-name">DISCORD</div>
+            <div class="channel-handle">ryptix</div>
+          </div>
+          <span class="channel-arrow">&rarr;</span>
+        </a>
+      </div>
+
+      <div class="stamp stamp-small" style="transform:rotate(2deg); margin-top:2.5rem;">
+        <span class="bs-text">END OF REPORT</span>
+        <span class="nobs-text">THAT'S ALL FOLKS</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Footer / End of File ────────────────────── -->
+  <footer class="eof">
+    <div class="eof-line"></div>
+    <div class="eof-text">&mdash; END OF FILE &mdash;</div>
+    <p>
+      <span class="bs-text">&copy; 2026 Ryptix. All rights reserved.</span>
+      <span class="nobs-text">&copy; 2026 Ryptix. It works. Probably.</span>
+    </p>
   </footer>
 
-  <!-- Scripts -->
-  <script src="script.js"></script>
-
+  <script src="dossier.js"></script>
 </body>
 </html>
