@@ -76,15 +76,19 @@ document.addEventListener("DOMContentLoaded", () => {
   function openFile() {
     if (!fileSelected) return;
 
-    // Slide cover out to the left
-    cover?.classList.add("cover-exit");
+    // Activate book BEHIND cover (z-50 vs z-100)
+    book?.classList.add("active");
+    goToPage(0, false);
 
-    // Activate book
+    // Flip cover open like a case-file page
+    requestAnimationFrame(() => {
+      cover?.classList.add("cover-exit");
+    });
+
+    // Fade-in nav after cover clears midpoint
     setTimeout(() => {
-      book?.classList.add("active");
       nav?.classList.remove("nav-hidden");
-      goToPage(0, false);
-    }, 300);
+    }, 650);
   }
 
   openBtn?.addEventListener("click", openFile);
@@ -105,7 +109,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const dots = dotsWrap?.querySelectorAll(".page-dot");
 
   let isFlipping = false;
-  const flipDuration = 700; // matches --page-speed
+  const flipDuration = 900; // matches --page-speed
 
   function goToPage(index, animate = true) {
     if (index < 0 || index >= pages.length) return;
@@ -234,12 +238,13 @@ document.addEventListener("DOMContentLoaded", () => {
   // Nav logo goes back to cover
   document.querySelector(".nav-logo")?.addEventListener("click", (e) => {
     e.preventDefault();
-    // Slide book away, bring cover back
-    book?.classList.remove("active");
+    // Flip cover back closed
+    cover?.classList.remove("cover-exit");
     nav?.classList.add("nav-hidden");
+    // Deactivate book after cover settles
     setTimeout(() => {
-      cover?.classList.remove("cover-exit");
-    }, 100);
+      book?.classList.remove("active");
+    }, 800);
   });
 
   // Keyboard navigation
