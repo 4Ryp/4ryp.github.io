@@ -842,6 +842,9 @@ nav.nav-hidden {
 }
 
 .tool-item {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
   font-size: .75rem;
   font-weight: 700;
   text-transform: uppercase;
@@ -852,6 +855,18 @@ nav.nav-hidden {
   color: var(--ink-light);
   transition: all .3s;
   cursor: default;
+}
+
+.tool-item svg {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  opacity: .6;
+  transition: opacity .3s;
+}
+
+.tool-item:hover svg {
+  opacity: 1;
 }
 
 .tool-item:hover {
