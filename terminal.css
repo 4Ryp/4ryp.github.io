@@ -35,7 +35,7 @@
   --radius:         8px;
   --radius-lg:      12px;
   --transition:     .3s ease;
-  --slide-speed:    .45s;
+  --slide-speed:    .35s;
   --font:           'JetBrains Mono', 'Courier New', monospace;
 }
 
@@ -544,28 +544,26 @@ nav.nav-hidden {
   scrollbar-color: rgba(255,255,255,.1) transparent;
 
   opacity: 0;
-  transform: translateX(50px) scale(.98);
-  filter: blur(6px);
+  transform: translateX(40px);
   transition:
     opacity var(--slide-speed) cubic-bezier(.4, 0, .2, 1),
-    transform var(--slide-speed) cubic-bezier(.4, 0, .2, 1),
-    filter var(--slide-speed) ease;
+    transform var(--slide-speed) cubic-bezier(.4, 0, .2, 1);
   pointer-events: none;
   z-index: 1;
+  will-change: transform, opacity;
+  contain: layout style;
 }
 
 .panel.active {
   opacity: 1;
-  transform: translateX(0) scale(1);
-  filter: blur(0);
+  transform: translateX(0);
   pointer-events: auto;
   z-index: 10;
 }
 
 .panel.exit-left {
   opacity: 0;
-  transform: translateX(-50px) scale(.98);
-  filter: blur(6px);
+  transform: translateX(-40px);
   pointer-events: none;
   z-index: 5;
 }

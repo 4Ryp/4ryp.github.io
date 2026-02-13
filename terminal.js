@@ -33,7 +33,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let currentPage  = 0;
   let fileSelected = false;
   let isAnimating  = false;
-  const animDuration = 450; // matches --slide-speed
+  const animDuration = 350; // matches --slide-speed
 
   /* ═══════════════════════════════════════════════════
      FILE VERSION TOGGLE (BS / NO BS)
@@ -76,6 +76,8 @@ document.addEventListener("DOMContentLoaded", () => {
       terminal?.classList.add("active");
       nav?.classList.remove("nav-hidden");
       goToPage(0, false);
+      // Preload: reveal all content in every panel immediately
+      panels.forEach(p => triggerReveals(p));
     }, 350);
   }
 
@@ -110,7 +112,6 @@ document.addEventListener("DOMContentLoaded", () => {
         p.style.cssText = "";
         if (i === index) {
           p.classList.add("active");
-          triggerReveals(p);
         }
       });
       updateUI(index);
@@ -122,9 +123,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Exit current panel
     const current = panels[currentPage];
-    current.style.transform = `translateX(${-50 * direction}px) scale(.98)`;
+    current.style.transform = `translateX(${-40 * direction}px)`;
     current.style.opacity = "0";
-    current.style.filter = "blur(6px)";
 
     setTimeout(() => {
       current.classList.remove("active");
@@ -133,11 +133,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Enter new panel
     const next = panels[index];
-    // Set starting position
     next.style.transition = "none";
-    next.style.transform = `translateX(${50 * direction}px) scale(.98)`;
+    next.style.transform = `translateX(${40 * direction}px)`;
     next.style.opacity = "0";
-    next.style.filter = "blur(6px)";
     next.classList.add("active");
 
     // Force reflow then animate
@@ -145,9 +143,7 @@ document.addEventListener("DOMContentLoaded", () => {
     next.style.transition = "";
     next.style.transform = "";
     next.style.opacity = "";
-    next.style.filter = "";
 
-    triggerReveals(next);
     updateUI(index);
     currentPage = index;
 
@@ -201,72 +197,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   /* ── Scroll / wheel navigation ───────────────────── */
   let wheelAccum = 0;
-  const wheelThreshold = 80;
   let wheelTimer = null;
-  let wheelDragging = false;
-
-  function applyDragOffset(offset) {
-    // Live-drag the current panel and peek the next/prev panel
-    const cur = panels[currentPage];
-    if (!cur) return;
-
-    const clamp = Math.max(-150, Math.min(150, offset));
-    const progress = clamp / 150;                         // -1 … 1
-    const absP = Math.abs(progress);
-
-    // Current panel shifts, fades and blurs proportionally
-    cur.style.transition = "none";
-    cur.style.transform = `translateX(${clamp * 0.4}px) scale(${1 - absP * 0.02})`;
-    cur.style.opacity = `${1 - absP * 0.35}`;
-    cur.style.filter = `blur(${absP * 3}px)`;
-
-    // Peek neighbor
-    const neighborIdx = offset < 0 ? currentPage + 1 : currentPage - 1;
-    if (neighborIdx >= 0 && neighborIdx < panels.length) {
-      const nb = panels[neighborIdx];
-      const dir = offset < 0 ? 1 : -1;
-      nb.style.transition = "none";
-      nb.style.transform = `translateX(${(1 - absP) * 50 * dir}px) scale(${0.98 + absP * 0.02})`;
-      nb.style.opacity = `${absP * 0.6}`;
-      nb.style.filter = `blur(${(1 - absP) * 6}px)`;
-      nb.style.pointerEvents = "none";
-      nb.style.zIndex = "5";
-      nb.classList.add("active");
-    }
-  }
-
-  function clearDragStyles() {
-    panels.forEach(p => {
-      p.style.transition = "";
-      p.style.transform = "";
-      p.style.opacity = "";
-      p.style.filter = "";
-      p.style.pointerEvents = "";
-      p.style.zIndex = "";
-    });
-  }
-
-  function snapBack() {
-    // Smoothly reset everything
-    panels.forEach(p => {
-      p.style.transition = `transform .35s cubic-bezier(.4,0,.2,1), opacity .35s ease, filter .35s ease`;
-      p.style.transform = "";
-      p.style.opacity = "";
-      p.style.filter = "";
-    });
-    setTimeout(() => {
-      panels.forEach(p => {
-        p.style.transition = "";
-        p.style.pointerEvents = "";
-        p.style.zIndex = "";
-        if (!p.classList.contains("active") || panels[currentPage] !== p) {
-          if (p !== panels[currentPage]) {
-            p.classList.remove("active");
-          }
-        }
-      });
-    }, 360);
-  }
+  const wheelThreshold = 50;
 
   document.addEventListener("wheel", e => {
     if (!terminal?.classList.contains("active")) return;
@@ -276,42 +208,19 @@ document.addEventListener("DOMContentLoaded", () => {
     const delta = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
     wheelAccum += delta;
 
-    // Clamp accumulator so it doesn't fly off
-    wheelAccum = Math.max(-200, Math.min(200, wheelAccum));
-    wheelDragging = true;
-
-    // Apply live drag
-    applyDragOffset(-wheelAccum);
-
-    // After a pause, commit or snap back
     clearTimeout(wheelTimer);
     wheelTimer = setTimeout(() => {
-      wheelDragging = false;
       if (Math.abs(wheelAccum) >= wheelThreshold) {
-        const dir = wheelAccum > 0 ? 1 : -1;
-        const target = currentPage + dir;
-        clearDragStyles();
-        if (target >= 0 && target < panels.length) {
-          // Remove peek neighbor's inline active
-          panels.forEach((p, i) => {
-            if (i !== currentPage) { p.classList.remove("active"); p.style.cssText = ""; }
-          });
-          goToPage(target);
-        } else {
-          snapBack();
-        }
-      } else {
-        snapBack();
+        goToPage(currentPage + (wheelAccum > 0 ? 1 : -1));
       }
       wheelAccum = 0;
-    }, 150);
+    }, 80);
 
   }, { passive: false });
 
-  /* ── Touch swipe navigation (interactive drag) ───── */
+  /* ── Touch swipe navigation ──────────────────────── */
   let touchStartX = 0;
   let touchStartY = 0;
-  let touchDeltaX = 0;
   let isSwiping = false;
 
   document.addEventListener("touchstart", e => {
@@ -319,7 +228,6 @@ document.addEventListener("DOMContentLoaded", () => {
     if (isAnimating) return;
     touchStartX = e.touches[0].clientX;
     touchStartY = e.touches[0].clientY;
-    touchDeltaX = 0;
     isSwiping = false;
   }, { passive: true });
 
@@ -332,34 +240,16 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!isSwiping && Math.abs(dx) > 10 && Math.abs(dx) > Math.abs(dy) * 1.2) {
       isSwiping = true;
     }
-
-    if (isSwiping) {
-      e.preventDefault();
-      touchDeltaX = dx;
-      applyDragOffset(touchDeltaX);
-    }
+    if (isSwiping) e.preventDefault();
   }, { passive: false });
 
-  document.addEventListener("touchend", () => {
+  document.addEventListener("touchend", e => {
+    if (!terminal?.classList.contains("active")) return;
     if (!isSwiping) return;
-    const swipeThreshold = 50;
-
-    if (Math.abs(touchDeltaX) >= swipeThreshold) {
-      const target = touchDeltaX < 0 ? currentPage + 1 : currentPage - 1;
-      clearDragStyles();
-      panels.forEach((p, i) => {
-        if (i !== currentPage) { p.classList.remove("active"); p.style.cssText = ""; }
-      });
-      if (target >= 0 && target < panels.length) {
-        goToPage(target);
-      } else {
-        snapBack();
-      }
-    } else {
-      snapBack();
+    const dx = e.changedTouches[0].clientX - touchStartX;
+    if (Math.abs(dx) >= 40) {
+      goToPage(currentPage + (dx < 0 ? 1 : -1));
     }
-
-    touchDeltaX = 0;
     isSwiping = false;
   });
 
