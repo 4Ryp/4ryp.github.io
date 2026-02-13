@@ -3,149 +3,139 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CASE FILE: Ryptix</title>
-  <meta name="description" content="Case File #4RYP — Subject: Ryptix. Classification: Public." />
-  <meta name="theme-color" content="#1a1710" />
+  <title>ryptix.sys</title>
+  <meta name="description" content="ryptix.sys — terminal portfolio" />
+  <meta name="theme-color" content="#1a1a1a" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="dossier.css" />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="terminal.css" />
 </head>
 <body>
 
   <!-- Preloader -->
   <div class="preloader" id="preloader">
     <div class="preloader-inner">
-      <span class="preloader-text">ACCESSING FILE</span>
-      <span class="blink">_</span>
+      <div class="boot-line">[ OK ] Loading system modules...</div>
+      <div class="boot-line boot-d1">[ OK ] Mounting file system...</div>
+      <div class="boot-line boot-d2">[ OK ] Initializing ryptix.sys<span class="blink">_</span></div>
     </div>
   </div>
 
-  <!-- ─── Navigation (hidden until file is opened) ── -->
+  <!-- Navigation -->
   <nav class="nav-hidden" id="mainNav">
-    <a href="#" class="nav-logo" data-page="0">CASE #4RYP</a>
+    <a href="#" class="nav-logo"><span class="logo-prompt">~/</span>ryptix</a>
     <button class="menu-toggle" aria-label="Toggle menu">
       <span></span><span></span><span></span>
     </button>
     <div class="nav-links">
-      <a href="#" data-page="0">PROFILE</a>
-      <a href="#" data-page="1">EVIDENCE</a>
-      <a href="#" data-page="2">TOOLS</a>
-      <a href="#" data-page="3">CONTACT</a>
+      <a href="#" data-page="0" class="nav-tab"><span class="tab-idx">01</span>profile</a>
+      <a href="#" data-page="1" class="nav-tab"><span class="tab-idx">02</span>projects</a>
+      <a href="#" data-page="2" class="nav-tab"><span class="tab-idx">03</span>skills</a>
+      <a href="#" data-page="3" class="nav-tab"><span class="tab-idx">04</span>contact</a>
     </div>
   </nav>
 
   <!-- ═══════════════════════════════════════════════
-       COVER PAGE
+       COVER (terminal boot)
        ═══════════════════════════════════════════════ -->
-  <section class="page cover" id="cover">
-    <div class="page-paper">
-      <div class="binder-strip"></div>
-
-      <div class="doc-header">
-        <span>CASE FILE #4RYP-2026</span>
-        <span>PAGE 1 OF 5</span>
-      </div>
-
-      <div class="stamp stamp-classified">CLASSIFIED</div>
-
-      <div class="cover-meta">
-        <div class="meta-row"><span class="meta-label">DATE OPENED:</span> 2021</div>
-        <div class="meta-row"><span class="meta-label">STATUS:</span> ACTIVE</div>
-        <div class="meta-row"><span class="meta-label">CLEARANCE:</span> <strong>PUBLIC</strong></div>
-      </div>
-
-      <h1 class="cover-title">SUBJECT:<br /><span class="subject-name">RYPTIX</span></h1>
-
-      <p class="cover-role">
-        <span class="bs-text">SOFTWARE DEVELOPER &mdash; FULL STACK ENGINEER</span>
-        <span class="nobs-text">DOES ANYONE KNOW THIS GUY?</span>
-      </p>
-
-      <div class="divider"></div>
-
-      <!-- ═══ THE BIG TOGGLE ═══ -->
-      <div class="file-select">
-        <div class="file-select-header">&#9888; SELECT FILE VERSION</div>
-        <div class="file-select-buttons">
-          <button class="file-btn" id="btnSanitized">
-            <div class="file-btn-stamp">SANITIZED</div>
-            <div class="file-btn-sub">Cleaned for public viewing.</div>
-            <div class="file-btn-active-tag">&#10003; ACTIVE</div>
-          </button>
-          <div class="file-select-or">OR</div>
-          <button class="file-btn file-btn-raw" id="btnRaw">
-            <div class="file-btn-stamp">RAW FILE</div>
-            <div class="file-btn-sub">Unredacted.</div>
-            <div class="file-btn-active-tag">&#10003; ACTIVE</div>
-          </button>
+  <section class="cover" id="cover">
+    <div class="cover-panel">
+      <div class="terminal-bar">
+        <div class="terminal-dots">
+          <span class="tdot tdot-r"></span>
+          <span class="tdot tdot-y"></span>
+          <span class="tdot tdot-g"></span>
         </div>
+        <span class="terminal-title">ryptix.sys &mdash; access terminal</span>
       </div>
 
-      <div class="divider"></div>
+      <div class="cover-body">
+        <div class="sys-info">
+          <div class="sys-line"><span class="prompt">$</span> cat /etc/casefile</div>
+          <div class="sys-output">
+            <div class="meta-row"><span class="meta-key">FILE</span><span class="meta-val">#4RYP-2026</span></div>
+            <div class="meta-row"><span class="meta-key">OPENED</span><span class="meta-val">2021</span></div>
+            <div class="meta-row"><span class="meta-key">STATUS</span><span class="meta-val status-active">&bull; ACTIVE</span></div>
+            <div class="meta-row"><span class="meta-key">ACCESS</span><span class="meta-val">PUBLIC</span></div>
+          </div>
+        </div>
 
-      <div class="stamp stamp-small" style="transform:rotate(3deg); align-self:flex-end;">
-        <span class="bs-text">APPROVED FOR DISTRIBUTION</span>
-        <span class="nobs-text">NOBODY ASKED FOR THIS</span>
+        <h1 class="cover-name">
+          <span class="cover-label">SUBJECT</span>
+          RYPTIX
+        </h1>
+
+        <p class="cover-role">
+          <span class="bs-text">Software Developer &mdash; Full Stack Engineer</span>
+          <span class="nobs-text">does anyone know this guy?</span>
+        </p>
+
+        <div class="divider"></div>
+
+        <div class="file-select">
+          <div class="file-select-header"><span class="prompt">$</span> select --file-version</div>
+          <div class="file-select-buttons">
+            <button class="file-btn" id="btnSanitized">
+              <span class="file-btn-label">SANITIZED</span>
+              <span class="file-btn-desc">Cleaned for public viewing</span>
+              <span class="file-btn-tag">&check; SELECTED</span>
+            </button>
+            <span class="file-select-or">or</span>
+            <button class="file-btn file-btn-raw" id="btnRaw">
+              <span class="file-btn-label">RAW</span>
+              <span class="file-btn-desc">Unredacted output</span>
+              <span class="file-btn-tag">&check; SELECTED</span>
+            </button>
+          </div>
+        </div>
+
+        <button class="open-btn" id="openFileBtn">
+          <span class="prompt">&gt;</span> open file<span class="blink">_</span>
+        </button>
       </div>
-
-      <!-- Open File button — hidden until a version is selected -->
-      <button class="open-file-btn" id="openFileBtn">
-        <span class="open-file-text">OPEN FILE</span>
-        <span class="open-file-arrow">&rarr;</span>
-      </button>
     </div>
   </section>
 
-  <!-- ── Book Container (all content pages) ──────── -->
-  <div class="book" id="book">
+  <!-- ── Terminal Container ────────────────────────── -->
+  <div class="terminal" id="terminal">
 
-    <!-- Prev / Next arrows -->
-    <button class="page-arrow page-arrow-prev" id="prevPage" aria-label="Previous page">&#8249;</button>
-    <button class="page-arrow page-arrow-next" id="nextPage" aria-label="Next page">&#8250;</button>
-
-    <!-- Page indicator -->
+    <button class="nav-arrow nav-arrow-prev" id="prevPage" aria-label="Previous">&lsaquo;</button>
+    <button class="nav-arrow nav-arrow-next" id="nextPage" aria-label="Next">&rsaquo;</button>
     <div class="page-dots" id="pageDots"></div>
 
   <!-- ═══════════════════════════════════════════════
-       SUBJECT PROFILE
+       PROFILE
        ═══════════════════════════════════════════════ -->
-  <section class="page book-page" id="about">
-    <div class="page-shadow"></div>
-    <div class="page-paper">
-      <div class="binder-strip"></div>
+  <section class="panel" id="about">
+    <div class="panel-glass">
 
-      <div class="doc-header">
-        <span>SUBJECT PROFILE</span>
-        <span>PAGE 2 OF 5</span>
+      <div class="panel-header">
+        <span class="panel-idx">01</span>
+        <span class="bs-text">SUBJECT PROFILE</span>
+        <span class="nobs-text">who is this guy?</span>
       </div>
 
-      <h2 class="section-heading reveal">
-        <span class="heading-num">01</span>
-        <span class="bs-text">SUBJECT PROFILE</span>
-        <span class="nobs-text">WHO IS THIS GUY?</span>
-      </h2>
-
-      <div class="profile-grid reveal reveal-d1">
+      <div class="profile-grid reveal">
         <div class="profile-card">
           <table class="profile-table">
-            <tr><td class="field-label">CODENAME</td><td class="field-value">Ryptix</td></tr>
-            <tr><td class="field-label">AGE</td><td class="field-value">18</td></tr>
+            <tr><td class="field-key">CODENAME</td><td class="field-val">Ryptix</td></tr>
+            <tr><td class="field-key">AGE</td><td class="field-val">18</td></tr>
             <tr>
-              <td class="field-label">STATUS</td>
-              <td class="field-value">
+              <td class="field-key">STATUS</td>
+              <td class="field-val">
                 <span class="bs-text">Active &mdash; Available for engagements</span>
                 <span class="nobs-text">Active &mdash;</span>
               </td>
             </tr>
-            <tr><td class="field-label">YEARS ACTIVE</td><td class="field-value">5+</td></tr>
-            <tr><td class="field-label">KNOWN OPERATIONS</td><td class="field-value">30+</td></tr>
+            <tr><td class="field-key">YEARS ACTIVE</td><td class="field-val">5+</td></tr>
+            <tr><td class="field-key">OPERATIONS</td><td class="field-val">30+</td></tr>
           </table>
         </div>
 
         <div class="profile-summary">
-          <div class="field-label">SUMMARY</div>
+          <div class="field-key">SUMMARY</div>
           <p class="bs-text">
 Developer with 5+ years of experience building reliable software.
 Strong at cleaning up messy code and making it easy to debug and maintain.
@@ -158,125 +148,99 @@ Works mainly in Python and Lua.
         </div>
       </div>
 
-      <div class="stamp stamp-small" style="transform:rotate(-2deg); margin-top:2rem;">
-        <span class="bs-text">VERIFIED</span>
-        <span class="nobs-text">CLOSE ENOUGH</span>
+      <div class="stamp reveal reveal-d1">
+        <span class="bs-text">[VERIFIED]</span>
+        <span class="nobs-text">[CLOSE ENOUGH]</span>
       </div>
     </div>
   </section>
 
   <!-- ═══════════════════════════════════════════════
-       EVIDENCE LOCKER
+       PROJECTS
        ═══════════════════════════════════════════════ -->
-  <section class="page book-page" id="projects">
-    <div class="page-shadow"></div>
-    <div class="page-paper">
-      <div class="binder-strip"></div>
+  <section class="panel" id="projects">
+    <div class="panel-glass">
 
-      <div class="doc-header">
-        <span>EVIDENCE LOCKER</span>
-        <span>PAGE 3 OF 5</span>
+      <div class="panel-header">
+        <span class="panel-idx">02</span>
+        <span class="bs-text">EVIDENCE LOCKER</span>
+        <span class="nobs-text">stuff i made</span>
       </div>
 
-      <h2 class="section-heading reveal">
-        <span class="heading-num">02</span>
-        <span class="bs-text">EVIDENCE LOCKER</span>
-        <span class="nobs-text">STUFF I MADE</span>
-      </h2>
-
-      <p class="section-note reveal reveal-d1">
-        <span class="bs-text">Documented operations and their outcomes. Click to expand full reports.</span>
+      <p class="section-note reveal">
+        <span class="bs-text">Documented operations and their outcomes. Click to expand.</span>
         <span class="nobs-text">Things I actually built. Some of them even work.</span>
       </p>
 
-      <!-- Exhibit A -->
-      <details class="exhibit reveal reveal-d2" open>
+      <details class="exhibit reveal reveal-d1" open>
         <summary class="exhibit-header">
-          <span class="exhibit-label">EXHIBIT A</span>
+          <span class="exhibit-label">01</span>
           <span class="exhibit-title">Project 1</span>
-          <span class="exhibit-toggle">&#9656; FULL REPORT</span>
+          <span class="exhibit-toggle"></span>
         </summary>
         <div class="exhibit-body">
-          <div class="exhibit-field">
-            <span class="field-label">DESCRIPTION</span>
-            <p class="bs-text">Not done yet.</p>
-            <p class="nobs-text">Idk</p>
-          </div>
+          <p class="bs-text">Not done yet.</p>
+          <p class="nobs-text">Idk</p>
           <div class="exhibit-tags">
             <span class="etag">React</span>
             <span class="etag">Node.js</span>
             <span class="etag">WebSocket</span>
           </div>
-          <a href="#" class="exhibit-link">ACCESS FILES &rarr;</a>
+          <a href="#" class="exhibit-link">$ open repo &rarr;</a>
         </div>
       </details>
 
-      <!-- Exhibit B -->
-      <details class="exhibit reveal reveal-d3">
+      <details class="exhibit reveal reveal-d2">
         <summary class="exhibit-header">
-          <span class="exhibit-label">EXHIBIT B</span>
+          <span class="exhibit-label">02</span>
           <span class="exhibit-title">Project 2</span>
-          <span class="exhibit-toggle">&#9656; FULL REPORT</span>
+          <span class="exhibit-toggle">&#9656; expand</span>
         </summary>
         <div class="exhibit-body">
-          <div class="exhibit-field">
-            <span class="field-label">DESCRIPTION</span>
-            <p class="bs-text">Not done yet.</p>
-            <p class="nobs-text">Idk</p>
-          </div>
+          <p class="bs-text">Not done yet.</p>
+          <p class="nobs-text">Idk</p>
           <div class="exhibit-tags">
             <span class="etag">TypeScript</span>
             <span class="etag">D3.js</span>
             <span class="etag">Python</span>
           </div>
-          <a href="#" class="exhibit-link">ACCESS FILES &rarr;</a>
+          <a href="#" class="exhibit-link">$ open repo &rarr;</a>
         </div>
       </details>
 
-      <!-- Exhibit C -->
-      <details class="exhibit reveal reveal-d4">
+      <details class="exhibit reveal reveal-d3">
         <summary class="exhibit-header">
-          <span class="exhibit-label">EXHIBIT C</span>
+          <span class="exhibit-label">03</span>
           <span class="exhibit-title">Project 3</span>
-          <span class="exhibit-toggle">&#9656; FULL REPORT</span>
+          <span class="exhibit-toggle">&#9656; expand</span>
         </summary>
         <div class="exhibit-body">
-          <div class="exhibit-field">
-            <span class="field-label">DESCRIPTION</span>
-            <p class="bs-text">Not done yet.</p>
-            <p class="nobs-text">Idk</p>
-          </div>
+          <p class="bs-text">Not done yet.</p>
+          <p class="nobs-text">Idk</p>
           <div class="exhibit-tags">
             <span class="etag">Python</span>
             <span class="etag">CLI</span>
             <span class="etag">REST API</span>
           </div>
-          <a href="#" class="exhibit-link">ACCESS FILES &rarr;</a>
+          <a href="#" class="exhibit-link">$ open repo &rarr;</a>
         </div>
       </details>
     </div>
   </section>
 
   <!-- ═══════════════════════════════════════════════
-       TOOLS RECOVERED
+       SKILLS
        ═══════════════════════════════════════════════ -->
-  <section class="page book-page" id="skills">
-    <div class="page-shadow"></div>
-    <div class="page-paper">
-      <div class="binder-strip"></div>
+  <section class="panel" id="skills">
+    <div class="panel-glass">
 
-      <div class="doc-header">
-        <span>TOOLS RECOVERED</span>
-        <span>PAGE 4 OF 5</span>
+      <div class="panel-header">
+        <span class="panel-idx">03</span>
+        <span class="bs-text">TOOLS &amp; TECHNOLOGIES</span>
+        <span class="nobs-text">tools recovered from subject</span>
       </div>
 
-      <h2 class="section-heading reveal">
-        <span class="heading-num">03</span>
-        <span class="bs-text">TOOLS &amp; TECHNOLOGIES</span>
-        <span class="nobs-text">TOOLS RECOVERED FROM SUBJECT</span>
-      </h2>
-
-      <div class="tools-grid reveal reveal-d1">
+      <div class="tools-grid reveal">
         <div class="tool-item"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M0 0h24v24H0V0zm22.034 18.276c-.175-1.095-.888-2.015-3.003-2.873-.736-.345-1.554-.585-1.797-1.14-.091-.33-.105-.51-.046-.705.15-.646.915-.84 1.515-.66.39.12.75.42.976.9 1.034-.676 1.034-.676 1.755-1.125-.27-.42-.404-.601-.586-.78-.63-.705-1.469-1.065-2.834-1.034l-.705.089c-.676.165-1.32.525-1.71 1.005-1.14 1.291-.811 3.541.569 4.471 1.365 1.02 3.361 1.244 3.616 2.205.24 1.17-.87 1.545-1.966 1.41-.811-.18-1.26-.586-1.755-1.336l-1.83 1.051c.21.48.45.689.81 1.109 1.74 1.756 6.09 1.666 6.871-1.004.029-.09.24-.705.074-1.65l.046.067zm-8.983-7.245h-2.248c0 1.938-.009 3.864-.009 5.805 0 1.232.063 2.363-.138 2.711-.33.689-1.18.601-1.566.48-.396-.196-.597-.466-.83-.855-.063-.105-.11-.196-.127-.196l-1.825 1.125c.305.63.75 1.172 1.324 1.517.855.51 2.004.675 3.207.405.783-.226 1.458-.691 1.811-1.411.51-.93.402-2.07.397-3.346.012-2.054 0-4.109 0-6.179l.004-.056z"/></svg><span>JavaScript</span></div>
         <div class="tool-item"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M1.125 0C.502 0 0 .502 0 1.125v21.75C0 23.498.502 24 1.125 24h21.75c.623 0 1.125-.502 1.125-1.125V1.125C24 .502 23.498 0 22.875 0zm17.363 9.75c.612 0 1.154.037 1.627.111a6.38 6.38 0 0 1 1.306.34v2.458a3.95 3.95 0 0 0-.643-.361 5.093 5.093 0 0 0-.717-.26 5.453 5.453 0 0 0-1.426-.2c-.3 0-.573.028-.819.086a2.1 2.1 0 0 0-.623.242c-.17.104-.3.229-.393.374a.888.888 0 0 0-.14.49c0 .196.053.373.156.529.104.156.252.304.443.444s.423.276.696.41c.273.135.582.274.926.416.47.197.892.407 1.266.628.374.222.695.473.963.753.268.279.472.598.614.957.142.359.214.776.214 1.253 0 .657-.125 1.21-.373 1.656a3.033 3.033 0 0 1-1.012 1.085 4.38 4.38 0 0 1-1.487.596c-.566.12-1.163.18-1.79.18a9.916 9.916 0 0 1-1.84-.164 5.544 5.544 0 0 1-1.512-.493v-2.63a5.033 5.033 0 0 0 3.237 1.2c.333 0 .624-.03.872-.09.249-.06.456-.144.623-.25.166-.108.29-.234.373-.38a1.023 1.023 0 0 0-.074-1.089 2.12 2.12 0 0 0-.537-.5 5.597 5.597 0 0 0-.807-.444 27.72 27.72 0 0 0-1.007-.436c-.918-.383-1.602-.852-2.053-1.405-.45-.553-.676-1.222-.676-2.005 0-.614.123-1.141.369-1.582.246-.441.58-.804 1.004-1.089a4.494 4.494 0 0 1 1.47-.629 7.536 7.536 0 0 1 1.77-.201zm-15.113.188h9.563v2.166H9.506v9.646H6.789v-9.646H3.375z"/></svg><span>TypeScript</span></div>
         <div class="tool-item"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M14.23 12.004a2.236 2.236 0 0 1-2.235 2.236 2.236 2.236 0 0 1-2.236-2.236 2.236 2.236 0 0 1 2.235-2.236 2.236 2.236 0 0 1 2.236 2.236zm2.648-10.69c-1.346 0-3.107.96-4.888 2.622-1.78-1.653-3.542-2.602-4.887-2.602-.41 0-.783.093-1.106.278-1.375.793-1.683 3.264-.973 6.365C1.98 8.917 0 10.42 0 12.004c0 1.59 1.99 3.097 5.043 4.03-.704 3.113-.39 5.588.988 6.38.32.187.69.275 1.102.275 1.345 0 3.107-.96 4.888-2.624 1.78 1.654 3.542 2.603 4.887 2.603.41 0 .783-.09 1.106-.275 1.374-.792 1.683-3.263.973-6.365C22.02 15.096 24 13.59 24 12.004c0-1.59-1.99-3.097-5.043-4.032.704-3.11.39-5.587-.988-6.38-.318-.184-.688-.277-1.092-.278zm-.005 1.09v.006c.225 0 .406.044.558.127.666.382.955 1.835.73 3.704-.054.46-.142.945-.25 1.44-.96-.236-2.006-.417-3.107-.534-.66-.905-1.345-1.727-2.035-2.447 1.592-1.48 3.087-2.292 4.105-2.295zm-9.77.02c1.012 0 2.514.808 4.11 2.28-.686.72-1.37 1.537-2.02 2.442-1.107.117-2.154.298-3.113.538-.112-.49-.195-.964-.254-1.42-.23-1.868.054-3.32.714-3.707.19-.09.4-.127.563-.132zm4.882 3.05c.455.468.91.992 1.36 1.564-.44-.02-.89-.034-1.345-.034-.46 0-.915.01-1.36.034.44-.572.895-1.096 1.345-1.565zM12 8.1c.74 0 1.477.034 2.202.093.406.582.802 1.203 1.183 1.86.372.64.71 1.29 1.018 1.946-.308.655-.646 1.31-1.013 1.95-.38.66-.773 1.288-1.18 1.87-.728.063-1.466.098-2.21.098-.74 0-1.477-.035-2.202-.093-.406-.582-.802-1.204-1.183-1.86-.372-.64-.71-1.29-1.018-1.946.303-.657.646-1.313 1.013-1.954.38-.66.773-1.286 1.18-1.868.728-.064 1.466-.098 2.21-.098zm-3.635.254c-.24.377-.48.763-.704 1.16-.225.39-.435.782-.635 1.174-.265-.656-.49-1.31-.676-1.947.64-.15 1.315-.283 2.015-.386zm7.26 0c.695.103 1.365.23 2.006.387-.18.632-.405 1.282-.66 1.933-.2-.39-.41-.783-.64-1.174-.225-.392-.465-.774-.705-1.146zm3.063.675c.484.15.944.317 1.375.498 1.732.74 2.852 1.708 2.852 2.476-.005.768-1.125 1.74-2.857 2.475-.42.18-.88.342-1.355.493-.28-.958-.646-1.956-1.1-2.98.45-1.017.81-2.01 1.085-2.964zm-13.395.004c.278.96.645 1.957 1.1 2.98-.45 1.017-.812 2.01-1.086 2.964-.484-.15-.944-.318-1.37-.5-1.732-.737-2.852-1.706-2.852-2.474 0-.768 1.12-1.742 2.852-2.476.42-.18.88-.342 1.356-.494zm11.678 4.28c.265.657.49 1.312.676 1.948-.64.157-1.316.29-2.016.39.24-.375.48-.762.705-1.158.225-.39.435-.788.636-1.18zm-9.945.02c.2.392.41.783.64 1.175.23.39.465.772.705 1.143-.695-.102-1.365-.23-2.006-.386.18-.63.406-1.282.66-1.933zM17.92 16.32c.112.493.2.968.254 1.423.23 1.868-.054 3.32-.714 3.708-.147.09-.338.128-.563.128-1.012 0-2.514-.807-4.11-2.28.686-.72 1.37-1.536 2.02-2.44 1.107-.118 2.154-.3 3.113-.54zm-11.83.01c.96.234 2.006.415 3.107.532.66.905 1.345 1.727 2.035 2.446-1.595 1.483-3.092 2.295-4.11 2.295-.22-.005-.406-.05-.553-.132-.666-.38-.955-1.834-.73-3.703.054-.46.142-.944.25-1.438zm4.56.64c.44.02.89.034 1.345.034.46 0 .915-.01 1.36-.034-.44.572-.895 1.095-1.345 1.565-.455-.47-.91-.993-1.36-1.565z"/></svg><span>React</span></div>
@@ -291,37 +255,27 @@ Works mainly in Python and Lua.
         <div class="tool-item"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3C7.58 3 4 4.79 4 7v10c0 2.21 3.58 4 8 4s8-1.79 8-4V7c0-2.21-3.58-4-8-4zm6 14c0 .5-2.13 2-6 2s-6-1.5-6-2v-2.42c1.42.89 3.58 1.42 6 1.42s4.58-.53 6-1.42V17zm0-5c0 .5-2.13 2-6 2s-6-1.5-6-2V9.58c1.42.89 3.58 1.42 6 1.42s4.58-.53 6-1.42V12zm-6-3c-3.87 0-6-1.5-6-2s2.13-2 6-2 6 1.5 6 2-2.13 2-6 2z"/></svg><span>SQL</span></div>
         <div class="tool-item"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M15.852 8.981h-4.588V0h4.588c2.476 0 4.49 2.014 4.49 4.49s-2.014 4.491-4.49 4.491zM12.735 7.51h3.117c1.665 0 3.019-1.355 3.019-3.019s-1.355-3.019-3.019-3.019h-3.117V7.51zm0 1.471H8.148c-2.476 0-4.49-2.014-4.49-4.49S5.672 0 8.148 0h4.588v8.981zm-4.587-7.51c-1.665 0-3.019 1.355-3.019 3.019s1.354 3.02 3.019 3.02h3.117V1.471H8.148zm4.587 15.019H8.148c-2.476 0-4.49-2.014-4.49-4.49s2.014-4.49 4.49-4.49h4.588v8.98zM8.148 8.981c-1.665 0-3.019 1.355-3.019 3.019s1.355 3.019 3.019 3.019h3.117V8.981H8.148zM8.172 24c-2.489 0-4.515-2.014-4.515-4.49s2.014-4.49 4.49-4.49h4.588v4.441c0 2.503-2.047 4.539-4.563 4.539zm-.024-7.51a3.023 3.023 0 0 0-3.019 3.019c0 1.665 1.365 3.019 3.044 3.019 1.705 0 3.093-1.376 3.093-3.068v-2.97H8.148zm7.704 0h-.098c-2.476 0-4.49-2.014-4.49-4.49s2.014-4.49 4.49-4.49h.098c2.476 0 4.49 2.014 4.49 4.49s-2.014 4.49-4.49 4.49zm-.097-7.509c-1.665 0-3.019 1.355-3.019 3.019s1.355 3.019 3.019 3.019h.098c1.665 0 3.019-1.355 3.019-3.019s-1.355-3.019-3.019-3.019h-.098z"/></svg><span>Figma</span></div>
       </div>
-
-      <!-- Coffee stain decoration -->
-      <div class="coffee-stain" aria-hidden="true"></div>
     </div>
   </section>
 
   <!-- ═══════════════════════════════════════════════
-       SUBMIT A TIP / CONTACT
+       CONTACT
        ═══════════════════════════════════════════════ -->
-  <section class="page book-page" id="contact">
-    <div class="page-shadow"></div>
-    <div class="page-paper">
-      <div class="binder-strip"></div>
+  <section class="panel" id="contact">
+    <div class="panel-glass">
 
-      <div class="doc-header">
-        <span>SECURE CHANNELS</span>
-        <span>PAGE 5 OF 5</span>
+      <div class="panel-header">
+        <span class="panel-idx">04</span>
+        <span class="bs-text">SECURE CHANNELS</span>
+        <span class="nobs-text">how to send burgers?</span>
       </div>
 
-      <h2 class="section-heading reveal">
-        <span class="heading-num">04</span>
-        <span class="bs-text">SUBMIT A TIP</span>
-        <span class="nobs-text">HOW TO SEND BURGERS?</span>
-      </h2>
-
-      <p class="section-note reveal reveal-d1">
-        <span class="bs-text">For inquiries, collaboration proposals, or project discussions, use the secure channels below.</span>
-        <span class="nobs-text">Wanna talk and send me burget gifs? Do it through these.</span>
+      <p class="section-note reveal">
+        <span class="bs-text">For inquiries, collaboration proposals, or project discussions.</span>
+        <span class="nobs-text">Wanna talk and send me burger gifs? Do it through these.</span>
       </p>
 
-      <div class="channel-grid reveal reveal-d2">
+      <div class="channel-grid reveal reveal-d1">
         <a href="https://github.com/4Ryp" target="_blank" rel="noopener" class="channel-card">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="channel-icon"><path d="M12 .3a12 12 0 00-3.8 23.38c.6.11.82-.26.82-.58v-2.02c-3.34.73-4.04-1.61-4.04-1.61a3.18 3.18 0 00-1.33-1.76c-1.09-.74.08-.73.08-.73a2.52 2.52 0 011.84 1.24 2.56 2.56 0 003.5 1 2.56 2.56 0 01.76-1.61c-2.67-.3-5.47-1.33-5.47-5.93a4.64 4.64 0 011.24-3.22 4.3 4.3 0 01.12-3.18s1-.33 3.3 1.23a11.42 11.42 0 016.01 0c2.3-1.56 3.3-1.23 3.3-1.23a4.3 4.3 0 01.12 3.18 4.64 4.64 0 011.24 3.22c0 4.61-2.81 5.63-5.48 5.92a2.86 2.86 0 01.82 2.22v3.29c0 .32.21.7.82.58A12 12 0 0012 .3z"/></svg>
           <div class="channel-info">
@@ -341,24 +295,16 @@ Works mainly in Python and Lua.
         </a>
       </div>
 
-      <div class="stamp stamp-small" style="transform:rotate(2deg); margin-top:2.5rem;">
-        <span class="bs-text">END OF REPORT</span>
-        <span class="nobs-text">THAT'S ALL</span>
-      </div>
-
-      <div class="eof-inline">
-        <div class="eof-line"></div>
-        <div class="eof-text">&mdash; END OF FILE &mdash;</div>
-        <p>
-          <span class="bs-text">&copy; 2026 Ryptix. All rights reserved.</span>
-          <span class="nobs-text">&copy; 2026 Ryptix.</span>
-        </p>
+      <div class="eof reveal reveal-d2">
+        <span>&mdash; EOF &mdash;</span>
+        <span class="bs-text">&copy; 2026 Ryptix. All rights reserved.</span>
+        <span class="nobs-text">&copy; 2026 Ryptix.</span>
       </div>
     </div>
   </section>
 
-  </div><!-- /.book -->
+  </div><!-- /.terminal -->
 
-  <script src="dossier.js"></script>
+  <script src="terminal.js"></script>
 </body>
 </html>
