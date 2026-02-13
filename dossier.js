@@ -104,22 +104,102 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const dots = dotsWrap?.querySelectorAll(".page-dot");
 
+  let isFlipping = false;
+  const flipDuration = 700; // matches --page-speed
+
   function goToPage(index, animate = true) {
     if (index < 0 || index >= pages.length) return;
+    if (index === currentPage && animate) return;
+    if (isFlipping && animate) return;
 
-    pages.forEach((page, i) => {
-      page.classList.remove("page-active", "page-left");
+    const direction = index > currentPage ? 1 : -1; // 1 = forward, -1 = backward
 
-      if (i === index) {
-        page.classList.add("page-active");
-        // Trigger reveal animations on this page
-        triggerReveals(page);
-      } else if (i < index) {
-        page.classList.add("page-left");
-      }
-      // else: stays at translateX(100%) (default)
-    });
+    if (!animate) {
+      // Instant setup (no animation) — e.g. first load
+      pages.forEach((page, i) => {
+        page.classList.remove("page-active", "page-turned", "page-upcoming", "page-flipping");
+        if (i < index) {
+          page.classList.add("page-turned");
+        } else if (i === index) {
+          page.classList.add("page-active");
+          triggerReveals(page);
+        } else {
+          page.classList.add("page-upcoming");
+        }
+      });
+      updateUI(index);
+      currentPage = index;
+      return;
+    }
 
+    isFlipping = true;
+
+    if (direction === 1) {
+      // Forward: flip current page over (turn it to the left)
+      // Process each page between current and target
+      const pagesToFlip = [];
+      for (let i = currentPage; i < index; i++) pagesToFlip.push(i);
+
+      pagesToFlip.forEach((pi, step) => {
+        const page = pages[pi];
+        setTimeout(() => {
+          page.classList.add("page-flipping");
+          page.classList.remove("page-active", "page-upcoming");
+          page.classList.add("page-turned");
+
+          // Clean up flipping class after animation
+          setTimeout(() => page.classList.remove("page-flipping"), flipDuration);
+        }, step * 120);
+      });
+
+      // After a small delay, set the new active page
+      setTimeout(() => {
+        pages[index].classList.remove("page-upcoming", "page-turned");
+        pages[index].classList.add("page-active");
+        triggerReveals(pages[index]);
+      }, pagesToFlip.length * 120);
+
+    } else {
+      // Backward: flip pages back from turned to active
+      const pagesToFlip = [];
+      for (let i = currentPage - 1; i >= index; i--) pagesToFlip.push(i);
+
+      // First, demote current page
+      pages[currentPage].classList.remove("page-active");
+      pages[currentPage].classList.add("page-upcoming");
+
+      pagesToFlip.forEach((pi, step) => {
+        const page = pages[pi];
+        setTimeout(() => {
+          page.classList.add("page-flipping");
+          page.classList.remove("page-turned");
+
+          if (pi === index) {
+            page.classList.add("page-active");
+            triggerReveals(page);
+          } else {
+            page.classList.add("page-upcoming");
+          }
+
+          setTimeout(() => page.classList.remove("page-flipping"), flipDuration);
+        }, step * 120);
+      });
+    }
+
+    updateUI(index);
+
+    // Calculate total animation time
+    const totalSteps = Math.abs(index - currentPage);
+    const totalTime = totalSteps * 120 + flipDuration;
+
+    setTimeout(() => {
+      isFlipping = false;
+    }, totalTime);
+
+    currentPage = index;
+  }
+
+  function updateUI(index) {
     // Update dots
     dots?.forEach((dot, i) => {
       dot.classList.toggle("dot-active", i === index);
@@ -133,8 +213,6 @@ document.addEventListener("DOMContentLoaded", () => {
     // Update arrow states
     if (prevBtn) prevBtn.disabled = (index === 0);
     if (nextBtn) nextBtn.disabled = (index === pages.length - 1);
-
-    currentPage = index;
   }
 
   prevBtn?.addEventListener("click", () => goToPage(currentPage - 1));

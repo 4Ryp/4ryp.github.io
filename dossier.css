@@ -23,7 +23,7 @@
   --transition:  .3s ease;
   --font-body:   'Space Mono', 'Courier New', Courier, monospace;
   --font-display:'Special Elite', 'Courier New', cursive;
-  --page-speed:  .55s;
+  --page-speed:  .7s;
 }
 
 /* ── Base ──────────────────────────────────────────── */
@@ -183,6 +183,7 @@ nav.nav-hidden {
 
 .page-paper {
   position: relative;
+  z-index: 2;
   max-width: 800px;
   width: 100%;
   max-height: calc(100vh - 3rem);
@@ -544,7 +545,7 @@ nav.nav-hidden {
 }
 
 /* ═══════════════════════════════════════════════════
-   BOOK CONTAINER  (horizontal page system)
+   BOOK CONTAINER  (3D page-flip system)
    ═══════════════════════════════════════════════════ */
 .book {
   position: fixed;
@@ -554,6 +555,7 @@ nav.nav-hidden {
   pointer-events: none;
   opacity: 0;
   transition: opacity .4s ease;
+  perspective: 2200px;
 }
 
 .book.active {
@@ -561,25 +563,81 @@ nav.nav-hidden {
   opacity: 1;
 }
 
-/* Individual book pages */
+/* ── Page flip wrapper ─────────────────────────────── */
 .book-page {
   position: absolute;
   inset: 0;
-  padding-top: 4rem; /* space for nav */
-  transform: translateX(100%);
-  transition: transform var(--page-speed) cubic-bezier(.22, 1, .36, 1),
-              opacity var(--page-speed) ease;
-  opacity: 0;
+  padding-top: 4rem;
+  transform-origin: left center;
+  transform: rotateY(0deg);
+  transition: transform var(--page-speed) cubic-bezier(.4, 0, .2, 1),
+              z-index 0s linear calc(var(--page-speed) / 2);
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+  z-index: 1;
 }
 
+/* Page sitting in the "unturned" stack (to the right / on top) */
+.book-page.page-upcoming {
+  transform: rotateY(0deg);
+  z-index: 1;
+}
+
+/* The currently visible page — highest z while resting */
 .book-page.page-active {
-  transform: translateX(0);
-  opacity: 1;
+  transform: rotateY(0deg);
+  z-index: 10;
 }
 
-.book-page.page-left {
-  transform: translateX(-100%);
+/* Page that has been turned — flipped over to the left */
+.book-page.page-turned {
+  transform: rotateY(-180deg);
+  z-index: 5;
+}
+
+/* While a page is actively flipping, bump its z-index so it's on top */
+.book-page.page-flipping {
+  z-index: 50;
+  transition: transform var(--page-speed) cubic-bezier(.4, 0, .2, 1);
+}
+
+/* ── Page backside ─────────────────────────────────── */
+.book-page::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, #d5cbb5, #e0d8c4 30%, #ede4d0);
+  transform: rotateY(180deg);
+  backface-visibility: hidden;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* ── Page flip shadow overlay ──────────────────────── */
+.page-shadow {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to left,
+    rgba(0, 0, 0, .15) 0%,
+    rgba(0, 0, 0, .06) 30%,
+    transparent 100%);
   opacity: 0;
+  pointer-events: none;
+  z-index: 20;
+  transition: opacity .35s ease;
+}
+
+.book-page.page-flipping .page-shadow,
+.book-page.page-active .page-shadow {
+  opacity: 0;
+}
+
+/* Add a subtle fold shadow on turned pages */
+.book-page.page-turned .page-shadow {
+  background: linear-gradient(to right,
+    rgba(0, 0, 0, .12) 0%,
+    transparent 40%);
+  opacity: 1;
 }
 
 /* ── Page Navigation Arrows ────────────────────────── */
@@ -1034,6 +1092,12 @@ body.nobs-mode .bs-text   { display: none; }
     page-break-after: always;
     height: auto;
     padding: 1rem 0;
+    backface-visibility: visible !important;
+  }
+
+  .book-page::after,
+  .page-shadow {
+    display: none !important;
   }
 
   .page-paper {
