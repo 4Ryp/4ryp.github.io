@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════════════
-   CASE FILE: RYPTIX — Dossier Styles
+   CASE FILE: RYPTIX — Dossier Styles (Book Mode)
    ═══════════════════════════════════════════════════ */
 
 /* ── Reset ─────────────────────────────────────────── */
@@ -23,12 +23,13 @@
   --transition:  .3s ease;
   --font-body:   'Space Mono', 'Courier New', Courier, monospace;
   --font-display:'Special Elite', 'Courier New', cursive;
+  --page-speed:  .55s;
 }
 
 /* ── Base ──────────────────────────────────────────── */
-html {
-  scroll-behavior: smooth;
-  scroll-snap-type: y proximity;
+html, body {
+  height: 100%;
+  overflow: hidden;
 }
 
 body {
@@ -37,7 +38,6 @@ body {
   color: var(--ink);
   line-height: 1.7;
   font-size: 14px;
-  overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -75,7 +75,7 @@ button { cursor: pointer; font-family: inherit; }
 @keyframes blink { 50% { opacity: 0; } }
 
 /* ═══════════════════════════════════════════════════
-   NAVIGATION
+   NAVIGATION  (hidden until file is opened)
    ═══════════════════════════════════════════════════ */
 nav {
   position: fixed;
@@ -91,12 +91,14 @@ nav {
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   border-bottom: 1px solid rgba(255, 255, 255, .06);
-  transition: background .3s, border-color .3s;
+  transition: transform .5s cubic-bezier(.22, 1, .36, 1),
+              opacity .5s ease;
 }
 
-nav.scrolled {
-  background: rgba(18, 17, 14, .97);
-  border-bottom-color: rgba(255, 255, 255, .1);
+nav.nav-hidden {
+  transform: translateY(-100%);
+  opacity: 0;
+  pointer-events: none;
 }
 
 .nav-logo {
@@ -167,23 +169,27 @@ nav.scrolled {
 }
 
 /* ═══════════════════════════════════════════════════
-   PAGE / DOCUMENT LAYOUT
+   PAGE / PAPER BASE
    ═══════════════════════════════════════════════════ */
 .page {
-  scroll-snap-align: start;
-  min-height: 100vh;
+  width: 100%;
+  height: 100vh;
+  height: 100dvh;
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 5rem 1.5rem;
+  padding: 1.5rem;
 }
 
 .page-paper {
   position: relative;
   max-width: 800px;
   width: 100%;
+  max-height: calc(100vh - 3rem);
+  max-height: calc(100dvh - 3rem);
+  overflow-y: auto;
   background: var(--paper);
-  padding: 3rem 3rem 3rem 4.5rem;
+  padding: 2.5rem 2.5rem 2.5rem 4.5rem;
   box-shadow:
     0 2px 8px rgba(0, 0, 0, .15),
     0 20px 60px rgba(0, 0, 0, .3),
@@ -191,6 +197,8 @@ nav.scrolled {
   border: 1px solid #c8bfaa;
   display: flex;
   flex-direction: column;
+  scrollbar-width: thin;
+  scrollbar-color: var(--paper-line) transparent;
 }
 
 /* Paper ruled-line texture */
@@ -323,9 +331,24 @@ nav.scrolled {
 /* ═══════════════════════════════════════════════════
    COVER PAGE
    ═══════════════════════════════════════════════════ */
+.cover {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: var(--desk);
+  transition: transform var(--page-speed) cubic-bezier(.22, 1, .36, 1),
+              opacity var(--page-speed) ease;
+}
+
+.cover.cover-exit {
+  transform: translateX(-100%);
+  opacity: 0;
+  pointer-events: none;
+}
+
 .cover .page-paper {
-  min-height: 85vh;
-  justify-content: center;
+  max-height: 100vh;
+  max-height: 100dvh;
 }
 
 .cover-meta { margin-bottom: 2rem; }
@@ -361,20 +384,6 @@ nav.scrolled {
   font-size: .9rem;
   color: var(--ink-light);
   margin-bottom: 1rem;
-}
-
-.scroll-hint {
-  text-align: center;
-  font-size: .7rem;
-  color: var(--ink-faded);
-  letter-spacing: .2em;
-  margin-top: 2rem;
-  animation: hintPulse 2.5s ease-in-out infinite;
-}
-
-@keyframes hintPulse {
-  0%, 100% { opacity: .4; }
-  50%      { opacity: 1; }
 }
 
 /* ═══════════════════════════════════════════════════
@@ -485,6 +494,179 @@ nav.scrolled {
 }
 
 .file-btn-raw[data-active="true"] .file-btn-stamp { color: var(--blue-ink); }
+
+/* ═══════════════════════════════════════════════════
+   OPEN FILE BUTTON
+   ═══════════════════════════════════════════════════ */
+.open-file-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin: 2rem auto 0;
+  padding: 1rem 2.5rem;
+  background: var(--ink);
+  color: var(--paper);
+  border: 2px solid var(--ink);
+  font-family: var(--font-display);
+  font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+  letter-spacing: .15em;
+  text-transform: uppercase;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(20px);
+  transition: opacity .5s ease, transform .5s ease,
+              visibility .5s ease,
+              background .2s, color .2s;
+  pointer-events: none;
+}
+
+.open-file-btn.visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.open-file-btn:hover {
+  background: transparent;
+  color: var(--ink);
+}
+
+.open-file-arrow {
+  font-size: 1.8rem;
+  transition: transform .3s ease;
+  line-height: 1;
+}
+
+.open-file-btn:hover .open-file-arrow {
+  transform: translateX(8px);
+}
+
+/* ═══════════════════════════════════════════════════
+   BOOK CONTAINER  (horizontal page system)
+   ═══════════════════════════════════════════════════ */
+.book {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  overflow: hidden;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity .4s ease;
+}
+
+.book.active {
+  pointer-events: auto;
+  opacity: 1;
+}
+
+/* Individual book pages */
+.book-page {
+  position: absolute;
+  inset: 0;
+  padding-top: 4rem; /* space for nav */
+  transform: translateX(100%);
+  transition: transform var(--page-speed) cubic-bezier(.22, 1, .36, 1),
+              opacity var(--page-speed) ease;
+  opacity: 0;
+}
+
+.book-page.page-active {
+  transform: translateX(0);
+  opacity: 1;
+}
+
+.book-page.page-left {
+  transform: translateX(-100%);
+  opacity: 0;
+}
+
+/* ── Page Navigation Arrows ────────────────────────── */
+.page-arrow {
+  position: fixed;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 300;
+  width: 56px;
+  height: 80px;
+  background: rgba(18, 17, 14, .7);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, .08);
+  color: #a8a29e;
+  font-size: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all .25s ease;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.book.active .page-arrow {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.page-arrow:hover {
+  background: rgba(18, 17, 14, .9);
+  color: #e7e5e4;
+  border-color: rgba(255, 255, 255, .15);
+}
+
+.page-arrow:disabled {
+  opacity: .2 !important;
+  pointer-events: none;
+}
+
+.page-arrow-prev {
+  left: 0;
+  border-radius: 0 4px 4px 0;
+}
+
+.page-arrow-next {
+  right: 0;
+  border-radius: 4px 0 0 4px;
+}
+
+/* ── Page Dots (indicator) ─────────────────────────── */
+.page-dots {
+  position: fixed;
+  bottom: 1.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 300;
+  display: flex;
+  gap: .5rem;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .4s ease;
+}
+
+.book.active .page-dots {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.page-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: 1px solid #78716c;
+  background: transparent;
+  cursor: pointer;
+  transition: all .3s ease;
+  padding: 0;
+}
+
+.page-dot:hover { border-color: #e7e5e4; }
+
+.page-dot.dot-active {
+  background: #fbbf24;
+  border-color: #fbbf24;
+  transform: scale(1.25);
+}
 
 /* ═══════════════════════════════════════════════════
    SUBJECT PROFILE (ABOUT)
@@ -756,28 +938,30 @@ nav.scrolled {
 }
 
 /* ═══════════════════════════════════════════════════
-   END OF FILE (FOOTER)
+   END OF FILE (inline in last page)
    ═══════════════════════════════════════════════════ */
-.eof {
+.eof-inline {
   text-align: center;
-  padding: 4rem 2rem 3rem;
-  color: #78716c;
+  margin-top: 3rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--paper-line);
+  color: var(--ink-faded);
   font-size: .75rem;
 }
 
-.eof-line {
-  width: 60px;
+.eof-inline .eof-line {
+  width: 50px;
   height: 1px;
-  background: #44403c;
-  margin: 0 auto 1.5rem;
+  background: var(--ink-faded);
+  margin: 0 auto 1rem;
+  opacity: .4;
 }
 
-.eof-text {
+.eof-inline .eof-text {
   font-family: var(--font-display);
-  font-size: 1rem;
-  letter-spacing: .2em;
-  margin-bottom: .5rem;
-  color: #a8a29e;
+  font-size: .9rem;
+  letter-spacing: .15em;
+  margin-bottom: .4rem;
 }
 
 /* ═══════════════════════════════════════════════════
@@ -794,7 +978,7 @@ body.nobs-mode .bs-text   { display: none; }
 }
 
 /* ═══════════════════════════════════════════════════
-   SCROLL ANIMATIONS
+   REVEAL ANIMATIONS (triggered per-page)
    ═══════════════════════════════════════════════════ */
 .reveal {
   opacity: 0;
@@ -817,20 +1001,28 @@ body.nobs-mode .bs-text   { display: none; }
    PRINT STYLES
    ═══════════════════════════════════════════════════ */
 @media print {
+  html, body { overflow: visible; height: auto; }
   body { background: #fff; }
 
-  nav, .preloader, .scroll-hint,
-  .file-select, .binder-strip, .coffee-stain {
+  nav, .preloader, .open-file-btn,
+  .file-select, .binder-strip, .coffee-stain,
+  .page-arrow, .page-dots, .cover {
     display: none !important;
   }
 
-  .page {
-    min-height: auto;
-    padding: 1rem 0;
+  .book { position: static; opacity: 1; pointer-events: auto; }
+
+  .book-page {
+    position: static !important;
+    transform: none !important;
+    opacity: 1 !important;
     page-break-after: always;
+    height: auto;
+    padding: 1rem 0;
   }
 
   .page-paper {
+    max-height: none;
     box-shadow: none;
     border: 1px solid #999;
     padding: 2rem;
@@ -844,9 +1036,10 @@ body.nobs-mode .bs-text   { display: none; }
    RESPONSIVE
    ═══════════════════════════════════════════════════ */
 @media (max-width: 768px) {
-  .page { padding: 4rem 1rem; }
+  .page { padding: 1rem; }
   .page-paper { padding: 2rem 2rem 2rem 3.5rem; }
   .binder-strip { width: 30px; }
+  .book-page { padding-top: 3.5rem; }
 
   .menu-toggle { display: flex; flex-direction: column; }
 
@@ -882,10 +1075,17 @@ body.nobs-mode .bs-text   { display: none; }
   .stamp-classified { font-size: 1.8rem; padding: .2rem 1rem; }
   .subject-name { font-size: clamp(2rem, 8vw, 3.5rem); }
   .cover-title { font-size: clamp(1.2rem, 3vw, 1.8rem); }
+
+  .page-arrow {
+    width: 44px;
+    height: 60px;
+    font-size: 1.6rem;
+  }
 }
 
 @media (max-width: 480px) {
   .page-paper { padding: 1.5rem 1.5rem 1.5rem 3rem; }
   .doc-header { flex-direction: column; gap: .3rem; }
   .channel-grid { grid-template-columns: 1fr; }
+  .page-arrow { width: 36px; height: 50px; font-size: 1.3rem; }
 }

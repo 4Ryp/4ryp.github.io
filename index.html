@@ -22,17 +22,17 @@
     </div>
   </div>
 
-  <!-- ─── Navigation ──────────────────────────────── -->
-  <nav>
-    <a href="#cover" class="nav-logo">CASE #4RYP</a>
+  <!-- ─── Navigation (hidden until file is opened) ── -->
+  <nav class="nav-hidden" id="mainNav">
+    <a href="#" class="nav-logo" data-page="0">CASE #4RYP</a>
     <button class="menu-toggle" aria-label="Toggle menu">
       <span></span><span></span><span></span>
     </button>
     <div class="nav-links">
-      <a href="#about">PROFILE</a>
-      <a href="#projects">EVIDENCE</a>
-      <a href="#skills">TOOLS</a>
-      <a href="#contact">CONTACT</a>
+      <a href="#" data-page="0">PROFILE</a>
+      <a href="#" data-page="1">EVIDENCE</a>
+      <a href="#" data-page="2">TOOLS</a>
+      <a href="#" data-page="3">CONTACT</a>
     </div>
   </nav>
 
@@ -69,7 +69,7 @@
       <div class="file-select">
         <div class="file-select-header">&#9888; SELECT FILE VERSION</div>
         <div class="file-select-buttons">
-          <button class="file-btn" id="btnSanitized" data-active="true">
+          <button class="file-btn" id="btnSanitized">
             <div class="file-btn-stamp">SANITIZED</div>
             <div class="file-btn-sub">Cleaned for public viewing.<br />Standard corporate fluff applied.</div>
             <div class="file-btn-active-tag">&#10003; ACTIVE</div>
@@ -90,14 +90,28 @@
         <span class="nobs-text">NOBODY ASKED FOR THIS</span>
       </div>
 
-      <div class="scroll-hint">&#8595; SCROLL TO OPEN FILE &#8595;</div>
+      <!-- Open File button — hidden until a version is selected -->
+      <button class="open-file-btn" id="openFileBtn">
+        <span class="open-file-text">OPEN FILE</span>
+        <span class="open-file-arrow">&rarr;</span>
+      </button>
     </div>
   </section>
+
+  <!-- ── Book Container (all content pages) ──────── -->
+  <div class="book" id="book">
+
+    <!-- Prev / Next arrows -->
+    <button class="page-arrow page-arrow-prev" id="prevPage" aria-label="Previous page">&#8249;</button>
+    <button class="page-arrow page-arrow-next" id="nextPage" aria-label="Next page">&#8250;</button>
+
+    <!-- Page indicator -->
+    <div class="page-dots" id="pageDots"></div>
 
   <!-- ═══════════════════════════════════════════════
        SUBJECT PROFILE
        ═══════════════════════════════════════════════ -->
-  <section class="page" id="about">
+  <section class="page book-page" id="about">
     <div class="page-paper">
       <div class="binder-strip"></div>
 
@@ -109,7 +123,7 @@
       <h2 class="section-heading reveal">
         <span class="heading-num">01</span>
         <span class="bs-text">SUBJECT PROFILE</span>
-        <span class="nobs-text">WHO IS THIS GUY</span>
+        <span class="nobs-text">WHO IS THIS GUY?</span>
       </h2>
 
       <div class="profile-grid reveal reveal-d1">
@@ -139,8 +153,7 @@
           </p>
           <p class="nobs-text">
             18 y/o. Been coding for about 5 years. I build things I'd personally
-            want to use and hope other people find them useful too. Not here to
-            impress anyone, just here to build.
+            want to use and hope other people find them useful too.
           </p>
         </div>
       </div>
@@ -155,7 +168,7 @@
   <!-- ═══════════════════════════════════════════════
        EVIDENCE LOCKER
        ═══════════════════════════════════════════════ -->
-  <section class="page" id="projects">
+  <section class="page book-page" id="projects">
     <div class="page-paper">
       <div class="binder-strip"></div>
 
@@ -246,7 +259,7 @@
   <!-- ═══════════════════════════════════════════════
        TOOLS RECOVERED
        ═══════════════════════════════════════════════ -->
-  <section class="page" id="skills">
+  <section class="page book-page" id="skills">
     <div class="page-paper">
       <div class="binder-strip"></div>
 
@@ -284,7 +297,7 @@
   <!-- ═══════════════════════════════════════════════
        SUBMIT A TIP / CONTACT
        ═══════════════════════════════════════════════ -->
-  <section class="page" id="contact">
+  <section class="page book-page" id="contact">
     <div class="page-paper">
       <div class="binder-strip"></div>
 
@@ -328,18 +341,19 @@
         <span class="bs-text">END OF REPORT</span>
         <span class="nobs-text">THAT'S ALL FOLKS</span>
       </div>
+
+      <div class="eof-inline">
+        <div class="eof-line"></div>
+        <div class="eof-text">&mdash; END OF FILE &mdash;</div>
+        <p>
+          <span class="bs-text">&copy; 2026 Ryptix. All rights reserved.</span>
+          <span class="nobs-text">&copy; 2026 Ryptix. It works. Probably.</span>
+        </p>
+      </div>
     </div>
   </section>
 
-  <!-- ─── Footer / End of File ────────────────────── -->
-  <footer class="eof">
-    <div class="eof-line"></div>
-    <div class="eof-text">&mdash; END OF FILE &mdash;</div>
-    <p>
-      <span class="bs-text">&copy; 2026 Ryptix. All rights reserved.</span>
-      <span class="nobs-text">&copy; 2026 Ryptix. It works. Probably.</span>
-    </p>
-  </footer>
+  </div><!-- /.book -->
 
   <script src="dossier.js"></script>
 </body>
