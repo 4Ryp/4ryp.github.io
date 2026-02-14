@@ -68,16 +68,24 @@ button { cursor: pointer; font-family: inherit; }
 ::-webkit-scrollbar-thumb { background: rgba(255,255,255,.1); border-radius: 3px; }
 ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,.2); }
 
-/* Subtle background glow */
+/* ── Particle canvas ────────────────────────────── */
+#particleCanvas {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Subtle background glow (on top of canvas) */
 body::before {
   content: "";
   position: fixed;
   inset: 0;
   background:
-    radial-gradient(ellipse 60% 50% at 50% 40%, rgba(50, 14, 31, .1), transparent),
-    radial-gradient(ellipse 40% 60% at 80% 80%, rgba(50, 14, 31, .05), transparent);
+    radial-gradient(ellipse 60% 50% at 50% 40%, rgba(50, 14, 31, .12), transparent),
+    radial-gradient(ellipse 40% 60% at 80% 80%, rgba(50, 14, 31, .06), transparent);
   pointer-events: none;
-  z-index: 0;
+  z-index: 1;
 }
 
 /* Subtle grid */
@@ -89,7 +97,7 @@ body::after {
     repeating-linear-gradient(0deg, transparent, transparent 80px, rgba(255,255,255,.008) 80px, rgba(255,255,255,.008) 81px),
     repeating-linear-gradient(90deg, transparent, transparent 80px, rgba(255,255,255,.008) 80px, rgba(255,255,255,.008) 81px);
   pointer-events: none;
-  z-index: 0;
+  z-index: 1;
 }
 
 /* ═══════════════════════════════════════════════════
@@ -149,11 +157,12 @@ nav {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: rgba(26, 26, 26, .8);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
-  border-bottom: 1px solid var(--border);
+  background: rgba(20, 20, 20, .5);
+  backdrop-filter: blur(32px) saturate(1.3);
+  -webkit-backdrop-filter: blur(32px) saturate(1.3);
+  border-bottom: 1px solid rgba(255, 255, 255, .06);
   transition: transform .45s ease, opacity .45s ease;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, .2);
 }
 
 nav.nav-hidden {
@@ -248,7 +257,7 @@ nav.nav-hidden {
   position: fixed;
   inset: 0;
   z-index: 100;
-  background: var(--bg);
+  background: transparent;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -265,16 +274,17 @@ nav.nav-hidden {
 .cover-panel {
   width: 520px;
   max-width: 100%;
-  background: rgba(20, 20, 20, .75);
-  backdrop-filter: blur(40px);
-  -webkit-backdrop-filter: blur(40px);
-  border: 1px solid var(--border);
+  background: rgba(20, 20, 20, .45);
+  backdrop-filter: blur(40px) saturate(1.3);
+  -webkit-backdrop-filter: blur(40px) saturate(1.3);
+  border: 1px solid rgba(255, 255, 255, .08);
   border-radius: var(--radius-lg);
   overflow: hidden;
   box-shadow:
-    0 0 0 1px rgba(255,255,255,.02),
-    0 20px 60px rgba(0, 0, 0, .4),
-    0 0 80px rgba(50, 14, 31, .08);
+    0 0 0 1px rgba(255,255,255,.03),
+    0 20px 60px rgba(0, 0, 0, .5),
+    0 0 80px rgba(50, 14, 31, .12),
+    inset 0 1px 0 rgba(255, 255, 255, .04);
 }
 
 .terminal-bar {
@@ -282,8 +292,8 @@ nav.nav-hidden {
   align-items: center;
   gap: .75rem;
   padding: .65rem 1rem;
-  background: rgba(255, 255, 255, .02);
-  border-bottom: 1px solid var(--border);
+  background: rgba(255, 255, 255, .015);
+  border-bottom: 1px solid rgba(255, 255, 255, .06);
 }
 
 .terminal-dots {
@@ -573,15 +583,17 @@ nav.nav-hidden {
   width: 620px;
   max-width: 100%;
   padding: 2rem 2.25rem;
-  background: rgba(20, 20, 20, .7);
-  backdrop-filter: blur(30px);
-  -webkit-backdrop-filter: blur(30px);
-  border: 1px solid var(--border);
+  background: rgba(20, 20, 20, .4);
+  backdrop-filter: blur(36px) saturate(1.2);
+  -webkit-backdrop-filter: blur(36px) saturate(1.2);
+  border: 1px solid rgba(255, 255, 255, .08);
   border-radius: var(--radius-lg);
   box-shadow:
-    0 0 0 1px rgba(255,255,255,.02),
-    0 16px 48px rgba(0, 0, 0, .25);
-  margin: auto 0; /* vertically center when shorter than viewport */
+    0 0 0 1px rgba(255,255,255,.03),
+    0 16px 48px rgba(0, 0, 0, .35),
+    0 0 60px rgba(50, 14, 31, .06),
+    inset 0 1px 0 rgba(255, 255, 255, .04);
+  margin: auto 0;
   flex-shrink: 0;
 }
 
@@ -612,10 +624,10 @@ nav.nav-hidden {
   z-index: 300;
   width: 36px;
   height: 52px;
-  background: rgba(20, 20, 20, .75);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid var(--border);
+  background: rgba(20, 20, 20, .4);
+  backdrop-filter: blur(20px) saturate(1.2);
+  -webkit-backdrop-filter: blur(20px) saturate(1.2);
+  border: 1px solid rgba(255, 255, 255, .06);
   color: var(--text-muted);
   font-size: 1.3rem;
   display: flex;
@@ -625,6 +637,7 @@ nav.nav-hidden {
   transition: all .25s ease;
   opacity: 0;
   pointer-events: none;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, .2);
 }
 
 .terminal.active .nav-arrow {
@@ -760,16 +773,17 @@ nav.nav-hidden {
 }
 
 .exhibit {
-  background: var(--surface);
-  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, .02);
+  border: 1px solid rgba(255, 255, 255, .05);
   border-radius: var(--radius);
   margin-bottom: .6rem;
   overflow: hidden;
-  transition: border-color .25s ease;
+  transition: border-color .25s ease, box-shadow .25s ease;
 }
 
 .exhibit[open] {
   border-color: var(--accent-glow-md);
+  box-shadow: 0 0 20px rgba(196, 75, 138, .04);
 }
 
 .exhibit-header {
@@ -855,18 +869,21 @@ nav.nav-hidden {
   align-items: center;
   gap: .55rem;
   padding: .55rem .7rem;
-  background: var(--surface);
-  border: 1px solid var(--border-light);
+  background: rgba(255, 255, 255, .025);
+  border: 1px solid rgba(255, 255, 255, .05);
   border-radius: 6px;
   font-size: .72rem;
   color: var(--text-secondary);
   transition: all .25s ease;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
 }
 
 .tool-item:hover {
-  border-color: var(--border);
-  background: var(--surface-hover);
+  border-color: rgba(255, 255, 255, .1);
+  background: rgba(255, 255, 255, .05);
   color: var(--text);
+  box-shadow: 0 0 20px rgba(196, 75, 138, .06);
 }
 
 .tool-item svg {
@@ -893,17 +910,19 @@ nav.nav-hidden {
   align-items: center;
   gap: .85rem;
   padding: .85rem 1.1rem;
-  background: var(--surface);
-  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, .025);
+  border: 1px solid rgba(255, 255, 255, .05);
   border-radius: var(--radius);
   transition: all .25s ease;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
 }
 
 .channel-card:hover {
   border-color: var(--accent-glow-md);
-  background: var(--surface-hover);
+  background: rgba(255, 255, 255, .05);
   transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(0,0,0,.15);
+  box-shadow: 0 8px 24px rgba(0,0,0,.2), 0 0 20px rgba(196, 75, 138, .06);
 }
 
 .channel-icon {
