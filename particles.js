@@ -35,7 +35,37 @@
   let dpr = Math.min(window.devicePixelRatio || 1, 2);
   let animId, lastFrame = 0;
   const frameInterval = 1000 / CFG.fpsCap;
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const isMobile = window.matchMedia('(max-width: 768px)').matches;
 
+  function parseRGB(value) {
+    if (!value) return null;
+    const raw = value.trim();
+    if (raw.startsWith('#')) {
+      const hex = raw.slice(1);
+      const full = hex.length === 3
+        ? hex.split('').map(c => c + c).join('')
+        : hex;
+      if (full.length !== 6) return null;
+      return [
+        parseInt(full.slice(0, 2), 16),
+        parseInt(full.slice(2, 4), 16),
+        parseInt(full.slice(4, 6), 16),
+      ];
+    }
+    const rgb = raw.match(/\d+/g);
+    if (!rgb || rgb.length < 3) return null;
+    return [Number(rgb[0]), Number(rgb[1]), Number(rgb[2])];
+  }
+
+  function syncThemeColor() {
+    const accent = getComputedStyle(document.body).getPropertyValue('--accent-light');
+    const parsed = parseRGB(accent);
+    if (parsed) {
+      CFG.particleColor = parsed;
+      CFG.lineColor = parsed;
+    }
+  }
 
   function resize() {
     dpr = Math.min(window.devicePixelRatio || 1, 2);
@@ -48,11 +78,13 @@
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
     const area = W * H;
-    const target = Math.floor(CFG.count * (area / (1920 * 1080)));
+    const baseCount = reducedMotion ? 26 : (isMobile ? 64 : CFG.count);
+    const target = Math.floor(baseCount * (area / (1920 * 1080)));
     const clamped = Math.max(40, Math.min(200, target));
+    const finalCount = reducedMotion ? Math.min(clamped, 30) : (isMobile ? Math.min(clamped, 95) : clamped);
 
-    while (particles.length < clamped) particles.push(createParticle());
-    while (particles.length > clamped) particles.pop();
+    while (particles.length < finalCount) particles.push(createParticle());
+    while (particles.length > finalCount) particles.pop();
   }
 
 
@@ -107,6 +139,7 @@
   }
 
   function update() {
+    const mouseRadius = isMobile ? CFG.mouseRadius * 0.68 : CFG.mouseRadius;
     for (let i = 0; i < particles.length; i++) {
       const p = particles[i];
 
@@ -118,8 +151,8 @@
         const dx = mouse.x - p.x;
         const dy = mouse.y - p.y;
         const dist = Math.sqrt(dx * dx + dy * dy);
-        if (dist < CFG.mouseRadius && dist > 1) {
-          const force = CFG.mouseForce * (1 - dist / CFG.mouseRadius);
+        if (dist < mouseRadius && dist > 1) {
+          const force = CFG.mouseForce * (1 - dist / mouseRadius);
           p.vx += (dx / dist) * force;
           p.vy += (dy / dist) * force;
         }
@@ -142,8 +175,11 @@
   function draw() {
     ctx.clearRect(0, 0, W, H);
 
-    const linkDist2 = CFG.linkDist * CFG.linkDist;
-    const mouseDist2 = CFG.mouseLineDist * CFG.mouseLineDist;
+    const lineDist = isMobile ? CFG.linkDist * 0.82 : CFG.linkDist;
+    const mouseRadius = isMobile ? CFG.mouseRadius * 0.68 : CFG.mouseRadius;
+    const mouseLineDist = isMobile ? CFG.mouseLineDist * 0.72 : CFG.mouseLineDist;
+    const linkDist2 = lineDist * lineDist;
+    const mouseDist2 = mouseLineDist * mouseLineDist;
     const [lr, lg, lb] = CFG.lineColor;
     const [pr, pg, pb] = CFG.particleColor;
 
@@ -158,14 +194,14 @@
         if (d2 > linkDist2) continue;
 
         const dist = Math.sqrt(d2);
-        let alpha = CFG.lineAlpha * (1 - dist / CFG.linkDist);
+        let alpha = CFG.lineAlpha * (1 - dist / lineDist);
 
         if (mouse.active) {
           const mx = (a.x + b.x) / 2 - mouse.x;
           const my = (a.y + b.y) / 2 - mouse.y;
           const md = Math.sqrt(mx * mx + my * my);
-          if (md < CFG.mouseRadius) {
-            alpha += CFG.mouseLineAlpha * (1 - md / CFG.mouseRadius);
+          if (md < mouseRadius) {
+            alpha += CFG.mouseLineAlpha * (1 - md / mouseRadius);
           }
         }
 
@@ -182,7 +218,7 @@
         const d2 = dx * dx + dy * dy;
         if (d2 < mouseDist2) {
           const dist = Math.sqrt(d2);
-          const alpha = CFG.mouseLineAlpha * (1 - dist / CFG.mouseLineDist);
+          const alpha = CFG.mouseLineAlpha * (1 - dist / mouseLineDist);
           ctx.strokeStyle = `rgba(${lr},${lg},${lb},${alpha})`;
           ctx.beginPath();
           ctx.moveTo(a.x, a.y);
@@ -195,13 +231,13 @@
     if (mouse.active && CFG.mouseGlow) {
       const grad = ctx.createRadialGradient(
         mouse.x, mouse.y, 0,
-        mouse.x, mouse.y, CFG.mouseRadius * 0.6
+        mouse.x, mouse.y, mouseRadius * 0.6
       );
       grad.addColorStop(0, `rgba(${pr},${pg},${pb},0.06)`);
       grad.addColorStop(1, `rgba(${pr},${pg},${pb},0)`);
       ctx.fillStyle = grad;
       ctx.beginPath();
-      ctx.arc(mouse.x, mouse.y, CFG.mouseRadius * 0.6, 0, Math.PI * 2);
+      ctx.arc(mouse.x, mouse.y, mouseRadius * 0.6, 0, Math.PI * 2);
       ctx.fill();
     }
 
@@ -213,8 +249,8 @@
         const dx = p.x - mouse.x;
         const dy = p.y - mouse.y;
         const dist = Math.sqrt(dx * dx + dy * dy);
-        if (dist < CFG.mouseRadius) {
-          const boost = 1 + 1.5 * (1 - dist / CFG.mouseRadius);
+        if (dist < mouseRadius) {
+          const boost = 1 + 1.5 * (1 - dist / mouseRadius);
           alpha = Math.min(1, alpha * boost);
         }
       }
@@ -251,6 +287,9 @@
   }
 
   window.addEventListener('resize', resize);
+  const observer = new MutationObserver(syncThemeColor);
+  observer.observe(document.body, { attributes: true, attributeFilter: ['data-theme'] });
+  syncThemeColor();
   resize();
   animId = requestAnimationFrame(tick);
 
