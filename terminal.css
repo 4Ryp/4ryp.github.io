@@ -716,6 +716,7 @@ nav.nav-hidden {
 .profile-table {
   width: 100%;
   border-collapse: collapse;
+  table-layout: fixed;
 }
 
 .profile-table tr {
@@ -733,13 +734,16 @@ nav.nav-hidden {
   letter-spacing: .1em;
   text-transform: uppercase;
   white-space: nowrap;
-  padding-right: 1.25rem;
+  padding-right: .75rem;
   font-weight: 500;
+  width: 105px;
 }
 
 .field-val {
   color: var(--text);
   font-size: .78rem;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 
 .profile-summary {
