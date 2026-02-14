@@ -198,12 +198,19 @@ document.addEventListener("DOMContentLoaded", () => {
   /* ── Scroll / wheel navigation ───────────────────── */
   let wheelAccum = 0;
   let wheelTimer = null;
+  let wheelLocked = false;
   const wheelThreshold = 50;
 
   document.addEventListener("wheel", e => {
     if (!terminal?.classList.contains("active")) return;
-    if (isAnimating) return;
     e.preventDefault();
+
+    // Drain accumulator and kill pending timer while animating or cooling down
+    if (isAnimating || wheelLocked) {
+      wheelAccum = 0;
+      clearTimeout(wheelTimer);
+      return;
+    }
 
     const delta = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
     wheelAccum += delta;
@@ -212,9 +219,12 @@ document.addEventListener("DOMContentLoaded", () => {
     wheelTimer = setTimeout(() => {
       if (Math.abs(wheelAccum) >= wheelThreshold) {
         goToPage(currentPage + (wheelAccum > 0 ? 1 : -1));
+        // Lock wheel for animation duration + buffer to prevent re-triggering
+        wheelLocked = true;
+        setTimeout(() => { wheelLocked = false; }, animDuration + 200);
       }
       wheelAccum = 0;
-    }, 80);
+    }, 100);
 
   }, { passive: false });
 
@@ -268,6 +278,15 @@ document.addEventListener("DOMContentLoaded", () => {
         toggle.textContent = details.open ? "" : "\u25B8 expand";
       });
     }
+  });
+
+  /* ── Prevent exhibit links from navigating ────────── */
+  document.querySelectorAll(".exhibit-link").forEach(link => {
+    link.addEventListener("click", e => {
+      e.preventDefault();
+      const href = link.getAttribute("href");
+      if (href && href !== "#") window.open(href, "_blank");
+    });
   });
 
   /* ── Mobile menu ─────────────────────────────────── */
