@@ -183,6 +183,9 @@ document.addEventListener("DOMContentLoaded", () => {
     setTimeout(() => {
       cover?.classList.remove("cover-exit");
       if (fileSelected) openBtn?.classList.add("visible");
+      // Reset + replay name animation
+      resetNameAnimation();
+      setTimeout(runNameAnimation, 400);
     }, 300);
   });
 
@@ -299,5 +302,106 @@ document.addEventListener("DOMContentLoaded", () => {
     mobileNav?.classList.toggle("open");
     document.body.style.overflow = mobileNav?.classList.contains("open") ? "hidden" : "";
   });
+
+  /* ═══════════════════════════════════════════════════
+     COVER NAME — Decrypt / Scramble Animation
+     ═══════════════════════════════════════════════════ */
+  const coverLabel    = document.getElementById("coverLabel");
+  const nameLetters   = document.getElementById("nameLetters");
+  const coverNameEl   = document.getElementById("coverName");
+  const glowLine      = document.getElementById("nameGlowLine");
+  const letters       = nameLetters ? nameLetters.querySelectorAll(".letter") : [];
+
+  const glyphPool = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%&*<>{}[]=/\\|~^";
+
+  function randomGlyph() {
+    return glyphPool[Math.floor(Math.random() * glyphPool.length)];
+  }
+
+  function runNameAnimation() {
+    /* Phase 1: typewriter label "SUBJECT" */
+    if (coverLabel) {
+      coverLabel.classList.add("typing");
+    }
+
+    /* Phase 2: scramble + resolve letters (starts after label types) */
+    const labelDelay = 650; // after typewriter finishes
+    const scrambleDuration = 600; // ms of random chars per letter
+    const scrambleInterval = 40; // ms between glyph swaps
+    const stagger = 100; // ms stagger between each letter start
+
+    letters.forEach((el, i) => {
+      const finalChar = el.getAttribute("data-char");
+      const startTime = labelDelay + i * stagger;
+
+      // Make letter visible and scrambling
+      setTimeout(() => {
+        el.classList.add("scrambling");
+        el.textContent = randomGlyph();
+
+        // Scramble loop
+        const scrambleEnd = performance.now() + scrambleDuration;
+        let scrambleRAF;
+
+        function scrambleStep() {
+          if (performance.now() < scrambleEnd) {
+            el.textContent = randomGlyph();
+            scrambleRAF = setTimeout(scrambleStep, scrambleInterval);
+          } else {
+            // Resolve
+            el.textContent = finalChar;
+            el.classList.remove("scrambling");
+            el.classList.add("resolved");
+
+            // After last letter resolves → glitch flash + glow sweep
+            if (i === letters.length - 1) {
+              setTimeout(() => {
+                coverNameEl?.classList.add("glitch-flash");
+                glowLine?.classList.add("sweep");
+
+                // Clean up label caret
+                if (coverLabel) {
+                  coverLabel.classList.remove("typing");
+                  coverLabel.classList.add("typed");
+                }
+
+                // Remove glitch class after anim
+                setTimeout(() => coverNameEl?.classList.remove("glitch-flash"), 700);
+              }, 200);
+            }
+          }
+        }
+
+        scrambleStep();
+      }, startTime);
+    });
+  }
+
+  function resetNameAnimation() {
+    coverLabel?.classList.remove("typing", "typed");
+    coverLabel && (coverLabel.style.width = "");
+    coverNameEl?.classList.remove("glitch-flash");
+    glowLine?.classList.remove("sweep");
+    letters.forEach(el => {
+      el.classList.remove("scrambling", "resolved");
+      el.textContent = el.getAttribute("data-char");
+    });
+  }
+
+  // Start after preloader fades out
+  let nameAnimScheduled = false;
+  function scheduleNameAnim() {
+    if (nameAnimScheduled) return;
+    nameAnimScheduled = true;
+    const delay = 1600; // preloader done at 1200 + transition
+    setTimeout(runNameAnimation, delay);
+  }
+
+  // Handle both timing scenarios
+  if (document.readyState === "complete") {
+    scheduleNameAnim();
+  } else {
+    window.addEventListener("load", scheduleNameAnim);
+  }
 
 });

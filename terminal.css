@@ -365,12 +365,115 @@ nav.nav-hidden {
   letter-spacing: -.02em;
   line-height: 1.1;
   margin-bottom: .4rem;
-  background: linear-gradient(135deg, var(--text) 30%, var(--accent-bright) 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.name-letters {
+  display: inline-flex;
+  gap: 0;
+}
+
+.letter {
+  display: inline-block;
+  background: linear-gradient(
+    135deg,
+    var(--text) 0%,
+    var(--accent-bright) 50%,
+    var(--accent-light) 100%
+  );
+  background-size: 200% 200%;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  opacity: 0;
+  transform: translateY(18px) scaleY(.7);
+  filter: blur(6px);
+  transition: none;
+  will-change: transform, opacity, filter;
+  position: relative;
 }
 
+/* Active state after JS resolves the letter */
+.letter.resolved {
+  opacity: 1;
+  transform: translateY(0) scaleY(1);
+  filter: blur(0px);
+  transition: opacity .4s cubic-bezier(.16,1,.3,1),
+              transform .5s cubic-bezier(.16,1,.3,1),
+              filter .4s ease-out;
+  animation: letterGradientShift 4s ease infinite,
+             letterGlow 2.5s ease-in-out infinite alternate;
+}
+
+/* While scrambling — visible but no glow yet */
+.letter.scrambling {
+  opacity: .6;
+  transform: translateY(0) scaleY(1);
+  filter: blur(0px);
+  -webkit-text-fill-color: var(--accent-light);
+  background: none;
+  transition: opacity .1s;
+}
+
+/* Gradient animation loops forever after resolve */
+@keyframes letterGradientShift {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Subtle glow pulse */
+@keyframes letterGlow {
+  0%   { filter: drop-shadow(0 0 4px transparent); }
+  100% { filter: drop-shadow(0 0 10px var(--accent-glow-md)); }
+}
+
+/* Horizontal scan-line that sweeps across on reveal */
+.name-glow-line {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--accent-bright) 40%,
+    var(--accent-light) 60%,
+    transparent 100%
+  );
+  transform: scaleX(0);
+  transform-origin: left;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.name-glow-line.sweep {
+  animation: glowLineSweep .8s cubic-bezier(.25,.46,.45,.94) forwards;
+}
+
+@keyframes glowLineSweep {
+  0%   { transform: scaleX(0); opacity: 1; }
+  60%  { transform: scaleX(1); opacity: 1; }
+  100% { transform: scaleX(1); opacity: 0; }
+}
+
+/* Glitch flicker on the whole heading — plays once */
+.cover-name.glitch-flash {
+  animation: headingGlitch .6s steps(2, end) forwards;
+}
+
+@keyframes headingGlitch {
+  0%   { text-shadow: 2px 0 var(--accent-bright), -2px 0 cyan; }
+  20%  { text-shadow: -1px 0 var(--accent-bright), 1px 0 cyan; }
+  40%  { text-shadow: 0 0 0 transparent; }
+  60%  { text-shadow: 1px 0 var(--accent-light), -1px 0 cyan; }
+  80%  { text-shadow: 0 0 0 transparent; }
+  100% { text-shadow: 0 0 0 transparent; }
+}
+
+/* SUBJECT label — typewriter style */
 .cover-label {
   display: block;
   font-size: .6rem;
@@ -379,6 +482,33 @@ nav.nav-hidden {
   color: var(--text-muted);
   -webkit-text-fill-color: var(--text-muted);
   margin-bottom: .2rem;
+  overflow: hidden;
+  white-space: nowrap;
+  width: 0;
+  border-right: 1px solid var(--accent-light);
+  opacity: 0;
+}
+
+.cover-label.typing {
+  opacity: 1;
+  animation: typewriter .6s steps(7, end) forwards,
+             blinkCaret .5s step-end 3;
+}
+
+.cover-label.typed {
+  width: auto;
+  border-right: none;
+  opacity: 1;
+  animation: none;
+}
+
+@keyframes typewriter {
+  from { width: 0; }
+  to   { width: 4.5em; }
+}
+
+@keyframes blinkCaret {
+  50% { border-color: transparent; }
 }
 
 .cover-role {
