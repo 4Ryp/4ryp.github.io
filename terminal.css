@@ -1,11 +1,5 @@
-/* ═══════════════════════════════════════════════════
-   RYPTIX.SYS — Terminal Portfolio
-   ═══════════════════════════════════════════════════ */
-
-/* ── Reset ─────────────────────────────────────────── */
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
-/* ── Tokens ────────────────────────────────────────── */
 :root {
   --bg:             #1a1a1a;
   --bg-elevated:    #222;
@@ -39,7 +33,6 @@
   --font:           'JetBrains Mono', 'Courier New', monospace;
 }
 
-/* ── Base ──────────────────────────────────────────── */
 html, body {
   height: 100%;
   overflow: hidden;
@@ -52,7 +45,6 @@ body {
   line-height: 1.7;
   font-size: 13px;
   -webkit-font-smoothing: antialiased;
-  /* Lock the base size so it never scales with viewport */
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
 }
@@ -62,13 +54,11 @@ a { color: inherit; text-decoration: none; }
 img { display: block; max-width: 100%; }
 button { cursor: pointer; font-family: inherit; }
 
-/* Scrollbar */
 ::-webkit-scrollbar { width: 5px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: rgba(255,255,255,.1); border-radius: 3px; }
 ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,.2); }
 
-/* ── Particle canvas ────────────────────────────── */
 #particleCanvas {
   position: fixed;
   inset: 0;
@@ -76,7 +66,6 @@ button { cursor: pointer; font-family: inherit; }
   pointer-events: none;
 }
 
-/* Subtle background glow (on top of canvas) */
 body::before {
   content: "";
   position: fixed;
@@ -88,7 +77,6 @@ body::before {
   z-index: 1;
 }
 
-/* Subtle grid */
 body::after {
   content: "";
   position: fixed;
@@ -100,9 +88,6 @@ body::after {
   z-index: 1;
 }
 
-/* ═══════════════════════════════════════════════════
-   PRELOADER
-   ═══════════════════════════════════════════════════ */
 .preloader {
   position: fixed;
   inset: 0;
@@ -144,9 +129,6 @@ body::after {
 .blink { animation: blink 1s step-end infinite; }
 @keyframes blink { 50% { opacity: 0; } }
 
-/* ═══════════════════════════════════════════════════
-   NAVIGATION
-   ═══════════════════════════════════════════════════ */
 nav {
   position: fixed;
   top: 0;
@@ -220,7 +202,6 @@ nav.nav-hidden {
 
 .nav-tab.active .tab-idx { color: var(--accent-light); }
 
-/* Mobile menu */
 .menu-toggle {
   display: none;
   width: 26px;
@@ -250,9 +231,6 @@ nav.nav-hidden {
 .menu-toggle.open span:nth-child(2) { opacity: 0; }
 .menu-toggle.open span:nth-child(3) { bottom: 50%; transform: translateY(50%) rotate(-45deg); }
 
-/* ═══════════════════════════════════════════════════
-   COVER  (terminal boot / login)
-   ═══════════════════════════════════════════════════ */
 .cover {
   position: fixed;
   inset: 0;
@@ -321,7 +299,6 @@ nav.nav-hidden {
   padding: 2rem 2rem 1.75rem;
 }
 
-/* System info block */
 .sys-info { margin-bottom: 1.5rem; }
 
 .sys-line {
@@ -358,7 +335,6 @@ nav.nav-hidden {
 .meta-val { color: var(--text); }
 .status-active { color: var(--green); }
 
-/* Cover heading */
 .cover-name {
   font-size: 2.6rem;
   font-weight: 700;
@@ -394,7 +370,6 @@ nav.nav-hidden {
   position: relative;
 }
 
-/* Active state after JS resolves the letter */
 .letter.resolved {
   opacity: 1;
   transform: translateY(0) scaleY(1);
@@ -406,7 +381,6 @@ nav.nav-hidden {
              letterGlow 2.5s ease-in-out infinite alternate;
 }
 
-/* While scrambling — visible but no glow yet */
 .letter.scrambling {
   opacity: .6;
   transform: translateY(0) scaleY(1);
@@ -416,20 +390,17 @@ nav.nav-hidden {
   transition: opacity .1s;
 }
 
-/* Gradient animation loops forever after resolve */
 @keyframes letterGradientShift {
   0%   { background-position: 0% 50%; }
   50%  { background-position: 100% 50%; }
   100% { background-position: 0% 50%; }
 }
 
-/* Subtle glow pulse */
 @keyframes letterGlow {
   0%   { filter: drop-shadow(0 0 4px transparent); }
   100% { filter: drop-shadow(0 0 10px var(--accent-glow-md)); }
 }
 
-/* Horizontal scan-line that sweeps across on reveal */
 .name-glow-line {
   position: absolute;
   bottom: 0;
@@ -459,7 +430,6 @@ nav.nav-hidden {
   100% { transform: scaleX(1); opacity: 0; }
 }
 
-/* Glitch flicker on the whole heading — plays once */
 .cover-name.glitch-flash {
   animation: headingGlitch .6s steps(2, end) forwards;
 }
@@ -473,7 +443,6 @@ nav.nav-hidden {
   100% { text-shadow: 0 0 0 transparent; }
 }
 
-/* SUBJECT label — typewriter style */
 .cover-label {
   display: block;
   font-size: .6rem;
@@ -523,9 +492,6 @@ nav.nav-hidden {
   margin: 1.25rem 0;
 }
 
-/* ═══════════════════════════════════════════════════
-   FILE SELECT  (BS / NO BS)
-   ═══════════════════════════════════════════════════ */
 .file-select { margin-bottom: 1.25rem; }
 
 .file-select-header {
@@ -600,7 +566,6 @@ nav.nav-hidden {
   transform: translateY(0);
 }
 
-/* Raw variant */
 .file-btn-raw[data-active="true"] {
   border-color: var(--blue);
   background: rgba(91, 141, 217, .07);
@@ -611,9 +576,6 @@ nav.nav-hidden {
   color: var(--blue-bright);
 }
 
-/* ═══════════════════════════════════════════════════
-   OPEN FILE BUTTON
-   ═══════════════════════════════════════════════════ */
 .open-btn {
   display: flex;
   align-items: center;
@@ -648,9 +610,6 @@ nav.nav-hidden {
   box-shadow: 0 0 30px rgba(196, 75, 138, .12);
 }
 
-/* ═══════════════════════════════════════════════════
-   TERMINAL CONTAINER
-   ═══════════════════════════════════════════════════ */
 .terminal {
   position: fixed;
   inset: 0;
@@ -669,9 +628,6 @@ nav.nav-hidden {
   opacity: 1;
 }
 
-/* ═══════════════════════════════════════════════════
-   PANELS  (content pages — smooth horizontal slide)
-   ═══════════════════════════════════════════════════ */
 .panel {
   position: absolute;
   inset: 0;
@@ -708,7 +664,6 @@ nav.nav-hidden {
   z-index: 5;
 }
 
-/* Glass card inside each panel */
 .panel-glass {
   width: 620px;
   max-width: 100%;
@@ -744,9 +699,6 @@ nav.nav-hidden {
   letter-spacing: .1em;
 }
 
-/* ═══════════════════════════════════════════════════
-   NAV ARROWS
-   ═══════════════════════════════════════════════════ */
 .nav-arrow {
   position: fixed;
   top: 50%;
@@ -790,9 +742,6 @@ nav.nav-hidden {
 .nav-arrow-prev { left: .75rem; }
 .nav-arrow-next { right: .75rem; }
 
-/* ═══════════════════════════════════════════════════
-   PAGE DOTS
-   ═══════════════════════════════════════════════════ */
 .page-dots {
   position: fixed;
   bottom: 1.1rem;
@@ -831,9 +780,6 @@ nav.nav-hidden {
   transform: scale(1.4);
 }
 
-/* ═══════════════════════════════════════════════════
-   PROFILE
-   ═══════════════════════════════════════════════════ */
 .profile-grid {
   display: grid;
   grid-template-columns: 210px 1fr;
@@ -896,9 +842,6 @@ nav.nav-hidden {
   background: transparent;
 }
 
-/* ═══════════════════════════════════════════════════
-   PROJECTS / EXHIBITS
-   ═══════════════════════════════════════════════════ */
 .section-note {
   font-size: .78rem;
   color: var(--text-secondary);
@@ -989,9 +932,6 @@ nav.nav-hidden {
 
 .exhibit-link:hover { color: var(--accent-bright); }
 
-/* ═══════════════════════════════════════════════════
-   TOOLS GRID
-   ═══════════════════════════════════════════════════ */
 .tools-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -1030,9 +970,6 @@ nav.nav-hidden {
 
 .tool-item:hover svg { opacity: 1; }
 
-/* ═══════════════════════════════════════════════════
-   CONTACT / CHANNELS
-   ═══════════════════════════════════════════════════ */
 .channel-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -1091,9 +1028,6 @@ nav.nav-hidden {
   color: var(--accent-light);
 }
 
-/* ═══════════════════════════════════════════════════
-   EOF
-   ═══════════════════════════════════════════════════ */
 .eof {
   text-align: center;
   margin-top: 1.75rem;
@@ -1107,18 +1041,12 @@ nav.nav-hidden {
   letter-spacing: .06em;
 }
 
-/* ═══════════════════════════════════════════════════
-   BS / NO-BS MODE
-   ═══════════════════════════════════════════════════ */
 .bs-text  { display: inline; }
 .nobs-text { display: none; }
 
 .nobs-mode .bs-text  { display: none; }
 .nobs-mode .nobs-text { display: inline; }
 
-/* ═══════════════════════════════════════════════════
-   REVEAL ANIMATIONS
-   ═══════════════════════════════════════════════════ */
 .reveal {
   opacity: 0;
   transform: translateY(14px);
@@ -1135,9 +1063,6 @@ nav.nav-hidden {
 .reveal-d3 { transition-delay: .3s; }
 .reveal-d4 { transition-delay: .4s; }
 
-/* ═══════════════════════════════════════════════════
-   PRINT
-   ═══════════════════════════════════════════════════ */
 @media print {
   body::before, body::after,
   .preloader, nav, .cover,
@@ -1168,9 +1093,6 @@ nav.nav-hidden {
   }
 }
 
-/* ═══════════════════════════════════════════════════
-   RESPONSIVE
-   ═══════════════════════════════════════════════════ */
 @media (max-width: 768px) {
   .menu-toggle { display: flex; flex-direction: column; }
 

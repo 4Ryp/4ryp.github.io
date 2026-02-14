@@ -1,10 +1,5 @@
-/* ═══════════════════════════════════════════════════
-   RYPTIX.SYS — Terminal Portfolio Scripts
-   ═══════════════════════════════════════════════════ */
-
 document.addEventListener("DOMContentLoaded", () => {
 
-  /* ── Preloader ───────────────────────────────────── */
   const preloader = document.getElementById("preloader");
 
   window.addEventListener("load", () => {
@@ -15,7 +10,6 @@ document.addEventListener("DOMContentLoaded", () => {
     setTimeout(() => preloader?.classList.add("done"), 1200);
   }
 
-  /* ── Elements ────────────────────────────────────── */
   const cover      = document.getElementById("cover");
   const terminal   = document.getElementById("terminal");
   const panels     = document.querySelectorAll(".panel");
@@ -33,11 +27,8 @@ document.addEventListener("DOMContentLoaded", () => {
   let currentPage  = 0;
   let fileSelected = false;
   let isAnimating  = false;
-  const animDuration = 350; // matches --slide-speed
+  const animDuration = 350;
 
-  /* ═══════════════════════════════════════════════════
-     FILE VERSION TOGGLE (BS / NO BS)
-     ═══════════════════════════════════════════════════ */
   function setMode(mode) {
     fileSelected = true;
 
@@ -56,7 +47,6 @@ document.addEventListener("DOMContentLoaded", () => {
     openBtn?.classList.add("visible");
   }
 
-  // Load saved preference
   const saved = localStorage.getItem("nobs-mode");
   if (saved === "true") { setMode("raw"); }
   else if (saved === "false") { setMode("sanitized"); }
@@ -64,31 +54,22 @@ document.addEventListener("DOMContentLoaded", () => {
   btnSan?.addEventListener("click", () => setMode("sanitized"));
   btnRaw?.addEventListener("click", () => setMode("raw"));
 
-  /* ═══════════════════════════════════════════════════
-     OPEN FILE → Enter Terminal
-     ═══════════════════════════════════════════════════ */
   function openFile() {
     if (!fileSelected) return;
 
     cover?.classList.add("cover-exit");
-    openBtn?.classList.remove("visible"); // kill pointer-events so it can't ghost-click
+    openBtn?.classList.remove("visible");
 
     setTimeout(() => {
       terminal?.classList.add("active");
       nav?.classList.remove("nav-hidden");
       goToPage(0, false);
-      // Preload: reveal all content in every panel immediately
       panels.forEach(p => triggerReveals(p));
     }, 350);
   }
 
   openBtn?.addEventListener("click", openFile);
 
-  /* ═══════════════════════════════════════════════════
-     PANEL NAVIGATION
-     ═══════════════════════════════════════════════════ */
-
-  // Build dots
   panels.forEach((_, i) => {
     const dot = document.createElement("button");
     dot.className = "page-dot";
@@ -107,7 +88,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const direction = index > currentPage ? 1 : -1;
 
     if (!animate) {
-      // Instant — no animation (first load)
       panels.forEach((p, i) => {
         p.classList.remove("active", "exit-left");
         p.style.cssText = "";
@@ -122,7 +102,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     isAnimating = true;
 
-    // Exit current panel
     const current = panels[currentPage];
     current.style.transform = `translateX(${-40 * direction}px)`;
     current.style.opacity = "0";
@@ -132,14 +111,12 @@ document.addEventListener("DOMContentLoaded", () => {
       current.style.cssText = "";
     }, animDuration);
 
-    // Enter new panel
     const next = panels[index];
     next.style.transition = "none";
     next.style.transform = `translateX(${40 * direction}px)`;
     next.style.opacity = "0";
     next.classList.add("active");
 
-    // Force reflow then animate
     void next.offsetWidth;
     next.style.transition = "";
     next.style.transform = "";
@@ -163,7 +140,6 @@ document.addEventListener("DOMContentLoaded", () => {
   prevBtn?.addEventListener("click", () => goToPage(currentPage - 1));
   nextBtn?.addEventListener("click", () => goToPage(currentPage + 1));
 
-  // Nav tab links
   navLinks.forEach(link => {
     link.addEventListener("click", e => {
       e.preventDefault();
@@ -175,7 +151,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  // Logo → back to cover
   document.querySelector(".nav-logo")?.addEventListener("click", e => {
     e.preventDefault();
     terminal?.classList.remove("active");
@@ -183,13 +158,11 @@ document.addEventListener("DOMContentLoaded", () => {
     setTimeout(() => {
       cover?.classList.remove("cover-exit");
       if (fileSelected) openBtn?.classList.add("visible");
-      // Reset + replay name animation
       resetNameAnimation();
       setTimeout(runNameAnimation, 400);
     }, 300);
   });
 
-  // Keyboard nav
   document.addEventListener("keydown", e => {
     if (!terminal?.classList.contains("active")) return;
 
@@ -202,7 +175,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  /* ── Scroll / wheel navigation ───────────────────── */
   let wheelAccum = 0;
   let wheelTimer = null;
   let wheelLocked = false;
@@ -212,7 +184,6 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!terminal?.classList.contains("active")) return;
     e.preventDefault();
 
-    // Drain accumulator and kill pending timer while animating or cooling down
     if (isAnimating || wheelLocked) {
       wheelAccum = 0;
       clearTimeout(wheelTimer);
@@ -226,7 +197,6 @@ document.addEventListener("DOMContentLoaded", () => {
     wheelTimer = setTimeout(() => {
       if (Math.abs(wheelAccum) >= wheelThreshold) {
         goToPage(currentPage + (wheelAccum > 0 ? 1 : -1));
-        // Lock wheel for animation duration + buffer to prevent re-triggering
         wheelLocked = true;
         setTimeout(() => { wheelLocked = false; }, animDuration + 200);
       }
@@ -235,7 +205,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   }, { passive: false });
 
-  /* ── Touch swipe navigation ──────────────────────── */
   let touchStartX = 0;
   let touchStartY = 0;
   let isSwiping = false;
@@ -270,14 +239,12 @@ document.addEventListener("DOMContentLoaded", () => {
     isSwiping = false;
   });
 
-  /* ── Reveal animations ───────────────────────────── */
   function triggerReveals(panel) {
     panel.querySelectorAll(".reveal:not(.visible)").forEach(el =>
       el.classList.add("visible")
     );
   }
 
-  /* ── Exhibit toggle text ─────────────────────────── */
   document.querySelectorAll(".exhibit").forEach(details => {
     const toggle = details.querySelector(".exhibit-toggle");
     if (toggle) {
@@ -287,7 +254,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  /* ── Prevent exhibit links from navigating ────────── */
   document.querySelectorAll(".exhibit-link").forEach(link => {
     link.addEventListener("click", e => {
       e.preventDefault();
@@ -296,16 +262,12 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  /* ── Mobile menu ─────────────────────────────────── */
   menuToggle?.addEventListener("click", () => {
     menuToggle.classList.toggle("open");
     mobileNav?.classList.toggle("open");
     document.body.style.overflow = mobileNav?.classList.contains("open") ? "hidden" : "";
   });
 
-  /* ═══════════════════════════════════════════════════
-     COVER NAME — Decrypt / Scramble Animation
-     ═══════════════════════════════════════════════════ */
   const coverLabel    = document.getElementById("coverLabel");
   const nameLetters   = document.getElementById("nameLetters");
   const coverNameEl   = document.getElementById("coverName");
@@ -319,27 +281,23 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function runNameAnimation() {
-    /* Phase 1: typewriter label "SUBJECT" */
     if (coverLabel) {
       coverLabel.classList.add("typing");
     }
 
-    /* Phase 2: scramble + resolve letters (starts after label types) */
-    const labelDelay = 650; // after typewriter finishes
-    const scrambleDuration = 600; // ms of random chars per letter
-    const scrambleInterval = 40; // ms between glyph swaps
-    const stagger = 100; // ms stagger between each letter start
+    const labelDelay = 650;
+    const scrambleDuration = 600;
+    const scrambleInterval = 40;
+    const stagger = 100;
 
     letters.forEach((el, i) => {
       const finalChar = el.getAttribute("data-char");
       const startTime = labelDelay + i * stagger;
 
-      // Make letter visible and scrambling
       setTimeout(() => {
         el.classList.add("scrambling");
         el.textContent = randomGlyph();
 
-        // Scramble loop
         const scrambleEnd = performance.now() + scrambleDuration;
         let scrambleRAF;
 
@@ -348,24 +306,20 @@ document.addEventListener("DOMContentLoaded", () => {
             el.textContent = randomGlyph();
             scrambleRAF = setTimeout(scrambleStep, scrambleInterval);
           } else {
-            // Resolve
             el.textContent = finalChar;
             el.classList.remove("scrambling");
             el.classList.add("resolved");
 
-            // After last letter resolves → glitch flash + glow sweep
             if (i === letters.length - 1) {
               setTimeout(() => {
                 coverNameEl?.classList.add("glitch-flash");
                 glowLine?.classList.add("sweep");
 
-                // Clean up label caret
                 if (coverLabel) {
                   coverLabel.classList.remove("typing");
                   coverLabel.classList.add("typed");
                 }
 
-                // Remove glitch class after anim
                 setTimeout(() => coverNameEl?.classList.remove("glitch-flash"), 700);
               }, 200);
             }
@@ -388,16 +342,14 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // Start after preloader fades out
   let nameAnimScheduled = false;
   function scheduleNameAnim() {
     if (nameAnimScheduled) return;
     nameAnimScheduled = true;
-    const delay = 1600; // preloader done at 1200 + transition
+    const delay = 1600;
     setTimeout(runNameAnimation, delay);
   }
 
-  // Handle both timing scenarios
   if (document.readyState === "complete") {
     scheduleNameAnim();
   } else {
