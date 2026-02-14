@@ -756,14 +756,14 @@ nav.nav-hidden {
 
 .stamp {
   font-size: .65rem;
-  color: var(--accent-light);
+  color: var(--text-muted);
   letter-spacing: .12em;
   margin-top: 1.5rem;
   padding: .35rem .7rem;
-  border: 1px solid var(--accent-glow-md);
+  border: 1px solid var(--border);
   border-radius: 6px;
   display: inline-block;
-  background: var(--accent-glow);
+  background: transparent;
 }
 
 /* ═══════════════════════════════════════════════════
