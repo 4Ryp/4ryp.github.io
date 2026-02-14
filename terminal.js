@@ -71,6 +71,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!fileSelected) return;
 
     cover?.classList.add("cover-exit");
+    openBtn?.classList.remove("visible"); // kill pointer-events so it can't ghost-click
 
     setTimeout(() => {
       terminal?.classList.add("active");
@@ -179,7 +180,10 @@ document.addEventListener("DOMContentLoaded", () => {
     e.preventDefault();
     terminal?.classList.remove("active");
     nav?.classList.add("nav-hidden");
-    setTimeout(() => cover?.classList.remove("cover-exit"), 300);
+    setTimeout(() => {
+      cover?.classList.remove("cover-exit");
+      if (fileSelected) openBtn?.classList.add("visible");
+    }, 300);
   });
 
   // Keyboard nav
