@@ -34,6 +34,7 @@
   let W, H, particles = [], mouse = { x: -9999, y: -9999, active: false };
   let dpr = Math.min(window.devicePixelRatio || 1, 2);
   let animId, lastFrame = 0;
+  let glowOpacity = 1;
   const frameInterval = 1000 / CFG.fpsCap;
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const isMobile = window.matchMedia('(max-width: 768px)').matches;
@@ -228,12 +229,14 @@
       }
     }
 
-    if (mouse.active && CFG.mouseGlow) {
+    const glowTarget = (mouse.active && CFG.mouseGlow && !window.__onGlassPanel) ? 1 : 0;
+    glowOpacity += (glowTarget - glowOpacity) * 0.04;
+    if (glowOpacity > 0.005) {
       const grad = ctx.createRadialGradient(
         mouse.x, mouse.y, 0,
         mouse.x, mouse.y, mouseRadius * 0.6
       );
-      grad.addColorStop(0, `rgba(${pr},${pg},${pb},0.06)`);
+      grad.addColorStop(0, `rgba(${pr},${pg},${pb},${0.06 * glowOpacity})`);
       grad.addColorStop(1, `rgba(${pr},${pg},${pb},0)`);
       ctx.fillStyle = grad;
       ctx.beginPath();
@@ -291,6 +294,17 @@
   observer.observe(document.body, { attributes: true, attributeFilter: ['data-theme'] });
   syncThemeColor();
   resize();
+
+  // Auto-start particles
+  lastFrame = performance.now();
   animId = requestAnimationFrame(tick);
+
+  // Expose a global starter in case something needs to restart
+  window.startParticles = function () {
+    if (!animId) {
+      lastFrame = performance.now();
+      animId = requestAnimationFrame(tick);
+    }
+  };
 
 })();
