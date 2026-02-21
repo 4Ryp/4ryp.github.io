@@ -119,6 +119,15 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     };
   })();
+  const lowPowerDevice = (navigator.hardwareConcurrency || 6) <= 4 || ((navigator.deviceMemory || 8) <= 4);
+  const perfLite = window.matchMedia('(prefers-reduced-motion: reduce)').matches || lowPowerDevice;
+  const isEmbedPreview = new URLSearchParams(window.location.search).get("embed") === "1";
+  if (perfLite) {
+    document.body.classList.add("perf-lite");
+  }
+  if (isEmbedPreview) {
+    document.body.classList.add("embed-preview");
+  }
   /* ── ambient glow drift (randomized, never repeats) ── */
   (() => {
     const el = document.documentElement;
@@ -156,32 +165,132 @@ document.addEventListener("DOMContentLoaded", () => {
       }
       requestAnimationFrame(tick);
     }
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    if (perfLite) return;
     requestAnimationFrame(tick);
   })();
-
-  /* ── glass panel mouse glow ── */
   window.__onGlassPanel = false;
-  document.querySelectorAll('.panel-glass, .cover-panel').forEach(panel => {
-    panel.addEventListener('mousemove', e => {
-      const r = panel.getBoundingClientRect();
-      panel.style.setProperty('--glow-x', (e.clientX - r.left) + 'px');
-      panel.style.setProperty('--glow-y', (e.clientY - r.top) + 'px');
+  const glassPanels = document.querySelectorAll('.panel-glass, .cover-panel');
+  glassPanels.forEach(panel => {
+    let rect = null;
+    let rafId = 0;
+    let glowX = -9999;
+    let glowY = -9999;
+    let active = false;
+    const updateRect = () => {
+      rect = panel.getBoundingClientRect();
+    };
+    const flushGlow = () => {
+      rafId = 0;
+      panel.style.setProperty('--glow-x', `${glowX}px`);
+      panel.style.setProperty('--glow-y', `${glowY}px`);
+    };
+    const queueGlow = () => {
+      if (rafId) return;
+      rafId = requestAnimationFrame(flushGlow);
+    };
+    panel.addEventListener('mouseenter', e => {
+      updateRect();
+      active = true;
       panel.classList.add('glow-active');
       window.__onGlassPanel = true;
+      glowX = e.clientX - rect.left;
+      glowY = e.clientY - rect.top;
+      queueGlow();
+    });
+    panel.addEventListener('mousemove', e => {
+      if (!active || !rect) updateRect();
+      glowX = e.clientX - rect.left;
+      glowY = e.clientY - rect.top;
+      queueGlow();
     }, { passive: true });
     panel.addEventListener('mouseleave', () => {
+      active = false;
+      if (rafId) {
+        cancelAnimationFrame(rafId);
+        rafId = 0;
+      }
       panel.classList.remove('glow-active');
       window.__onGlassPanel = false;
     });
+    window.addEventListener('resize', () => {
+      rect = null;
+    }, { passive: true });
   });
 
   const preloader = document.getElementById("preloader");
-  window.addEventListener("load", () => {
-    setTimeout(() => preloader?.classList.add("done"), 1200);
-  });
+  const preloaderInner = document.getElementById("preloaderInner");
+  const preloaderGreeting = document.getElementById("preloaderGreeting");
+  const projectPreviewFrames = document.querySelectorAll(".exhibit-preview-frame[data-src]");
+  if (!isEmbedPreview) {
+    projectPreviewFrames.forEach(frame => {
+      const src = frame.getAttribute("data-src");
+      if (src) frame.setAttribute("src", src);
+    });
+  }
+  const helloBySpeakers = [
+    "Hello",      // English
+    "Bonjour",      // French
+    "Hallo",    // German
+    "Privet",     // Russian
+    "Hola",       // Spanish
+    "Ciao",       // Italian
+    "Ola",        // Portuguese
+    "Ni Hao",      // Mandarin Chinese
+    "Hej",        // Swedish
+    "Czesc"       // Polish
+  ];
+  let preloaderSequenceStarted = false;
+  let preloaderSequenceDone = false;
+  let preloaderDoneQueue = [];
+  function onPreloaderDone(callback) {
+    if (preloaderSequenceDone) {
+      callback();
+      return;
+    }
+    preloaderDoneQueue.push(callback);
+  }
+  function resolvePreloaderDone() {
+    if (preloaderSequenceDone) return;
+    preloaderSequenceDone = true;
+    preloaderDoneQueue.forEach(fn => {
+      try { fn(); } catch {  }
+    });
+    preloaderDoneQueue = [];
+  }
+  function preloaderStepDelay(i) {
+    if (i < 2) return 520;
+    return 95;
+  }
+  async function runPreloaderSequence() {
+    if (preloaderSequenceStarted) return;
+    preloaderSequenceStarted = true;
+    if (isEmbedPreview) {
+      preloader?.classList.add("done");
+      resolvePreloaderDone();
+      return;
+    }
+    if (!preloader || !preloaderInner || !preloaderGreeting) {
+      resolvePreloaderDone();
+      return;
+    }
+    for (let i = 0; i < helloBySpeakers.length; i++) {
+      preloaderGreeting.classList.add("is-changing");
+      await sleep(55);
+      preloaderGreeting.textContent = `[ - ] ${helloBySpeakers[i]}`;
+      preloaderGreeting.classList.remove("is-changing");
+      sfx.boot();
+      await sleep(preloaderStepDelay(i));
+    }
+    preloaderInner.classList.add("swipe-up");
+    sfx.swipe();
+    await sleep(520);
+    preloader.classList.add("done");
+    sfx.success();
+    resolvePreloaderDone();
+  }
+  window.addEventListener("load", runPreloaderSequence);
   if (document.readyState === "complete") {
-    setTimeout(() => preloader?.classList.add("done"), 1200);
+    runPreloaderSequence();
   }
   const cover      = document.getElementById("cover");
   const terminal   = document.getElementById("terminal");
@@ -1520,9 +1629,11 @@ document.addEventListener("DOMContentLoaded", () => {
   let nameAnimScheduled = false;
   function scheduleNameAnim() {
     if (nameAnimScheduled) return;
-    nameAnimScheduled = true;
-    const delay = 1600;
-    setTimeout(runNameAnimation, delay);
+    onPreloaderDone(() => {
+      if (nameAnimScheduled) return;
+      nameAnimScheduled = true;
+      runNameAnimation();
+    });
   }
   if (document.readyState === "complete") {
     scheduleNameAnim();
@@ -1541,11 +1652,6 @@ document.addEventListener("DOMContentLoaded", () => {
   document.querySelectorAll(".channel-card").forEach(card => {
     card.addEventListener("click", () => sfx.click());
   });
-  {
-    const bootLines = document.querySelectorAll(".preloader .boot-line");
-    bootLines.forEach((line, i) => {
-      setTimeout(() => sfx.boot(), 200 + i * 350);
-    });
-    setTimeout(() => sfx.success(), 1100);
-  }
+
+
 });

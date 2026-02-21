@@ -26,18 +26,37 @@
     mouseLineAlpha: 0.15,
     mouseLineDist:  220,
     mouseGlow:      true,
+    shardMax:       18,
+    ambientShardIntervalMin: 900,
+    ambientShardIntervalMax: 2400,
+    shardSpeedMin:  0.12,
+    shardSpeedMax:  0.32,
+    shardTail:      12,
+    cometMax:       3,
+    cometTail:      120,
+    cometHeadSize:  18,
+    cometSpeedMin:  1.8,
+    cometSpeedMax:  3.4,
+    cometIntervalMin: 1600,
+    cometIntervalMax: 4200,
 
-    fpsCap:         60,
+    fpsCap:         120,
     pauseOffscreen: true,
   };
 
   let W, H, particles = [], mouse = { x: -9999, y: -9999, active: false };
+  let comets = [];
+  let shards = [];
   let dpr = Math.min(window.devicePixelRatio || 1, 2);
   let animId, lastFrame = 0;
   let glowOpacity = 1;
+  let nextCometAt = 0;
+  let nextAmbientShardAt = 0;
+  let lastUpdateTs = performance.now();
   const frameInterval = 1000 / CFG.fpsCap;
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const isMobile = window.matchMedia('(max-width: 768px)').matches;
+  const rand = (min, max) => min + Math.random() * (max - min);
 
   function parseRGB(value) {
     if (!value) return null;
@@ -104,6 +123,114 @@
     };
   }
 
+  function spawnComet() {
+    if (comets.length >= CFG.cometMax) return;
+    const speed = rand(CFG.cometSpeedMin, CFG.cometSpeedMax) * (isMobile ? 0.9 : 1);
+    const side = Math.random();
+    let x = 0;
+    let y = 0;
+    let vx = 0;
+    let vy = 0;
+    if (side < 0.34) {
+      x = -60;
+      y = Math.random() * H * 0.65;
+      vx = speed;
+      vy = rand(-0.25, 0.65) * speed;
+    } else if (side < 0.68) {
+      x = W + 60;
+      y = Math.random() * H * 0.65;
+      vx = -speed;
+      vy = rand(-0.25, 0.65) * speed;
+    } else {
+      x = Math.random() * W;
+      y = -60;
+      vx = rand(-0.55, 0.55) * speed;
+      vy = speed;
+    }
+    const life = Math.floor((Math.max(W, H) + 180) / Math.max(0.2, Math.hypot(vx, vy)));
+    comets.push({ x, y, vx, vy, life, maxLife: life, tail: [] });
+  }
+
+  function spawnAmbientShard() {
+    if (reducedMotion || shards.length >= CFG.shardMax) return;
+    const side = Math.random();
+    let x = 0;
+    let y = 0;
+    if (side < 0.25) {
+      x = -20;
+      y = Math.random() * H;
+    } else if (side < 0.5) {
+      x = W + 20;
+      y = Math.random() * H;
+    } else if (side < 0.75) {
+      x = Math.random() * W;
+      y = -20;
+    } else {
+      x = Math.random() * W;
+      y = H + 20;
+    }
+    const tx = rand(W * 0.2, W * 0.8);
+    const ty = rand(H * 0.2, H * 0.8);
+    const dx = tx - x;
+    const dy = ty - y;
+    const dist = Math.max(1, Math.hypot(dx, dy));
+    const speed = rand(CFG.shardSpeedMin, CFG.shardSpeedMax) * (isMobile ? 0.9 : 1);
+    const vx = (dx / dist) * speed;
+    const vy = (dy / dist) * speed;
+    const maxLife = rand(5200, 12000);
+    shards.push({
+      x,
+      y,
+      vx,
+      vy,
+      life: maxLife,
+      maxLife,
+      size: rand(0.9, 1.9),
+      tail: [],
+    });
+  }
+
+  function updateEffects(now, dtMs) {
+    if (!reducedMotion) {
+      if (!nextCometAt) nextCometAt = now + rand(CFG.cometIntervalMin, CFG.cometIntervalMax);
+      if (now >= nextCometAt) {
+        spawnComet();
+        nextCometAt = now + rand(CFG.cometIntervalMin, CFG.cometIntervalMax);
+      }
+      if (!nextAmbientShardAt) nextAmbientShardAt = now + rand(CFG.ambientShardIntervalMin, CFG.ambientShardIntervalMax);
+      if (now >= nextAmbientShardAt) {
+        spawnAmbientShard();
+        nextAmbientShardAt = now + rand(CFG.ambientShardIntervalMin, CFG.ambientShardIntervalMax);
+      }
+    }
+
+    const dt = dtMs / 16.67;
+    for (let i = comets.length - 1; i >= 0; i--) {
+      const c = comets[i];
+      c.x += c.vx * dt;
+      c.y += c.vy * dt;
+      c.tail.push({ x: c.x, y: c.y });
+      if (c.tail.length > CFG.cometTail) c.tail.shift();
+      c.life -= dt;
+
+      if (c.life <= 0 || c.x < -140 || c.x > W + 140 || c.y < -140 || c.y > H + 140) {
+        comets.splice(i, 1);
+      }
+    }
+
+    for (let i = shards.length - 1; i >= 0; i--) {
+      const s = shards[i];
+      s.x += s.vx * dt;
+      s.y += s.vy * dt;
+      s.tail.push({ x: s.x, y: s.y });
+      if (s.tail.length > CFG.shardTail) s.tail.shift();
+      s.life -= dtMs;
+      if (s.life <= 0 || s.x < -90 || s.x > W + 90 || s.y < -90 || s.y > H + 90) {
+        shards.splice(i, 1);
+      }
+    }
+  }
+
   function onMouseMove(e) {
     mouse.x = e.clientX;
     mouse.y = e.clientY;
@@ -123,6 +250,61 @@
     mouse.active = false;
   }
 
+  function drawEffects(pr, pg, pb) {
+    const rgb = `${pr},${pg},${pb}`;
+
+    for (let i = 0; i < comets.length; i++) {
+      const c = comets[i];
+      for (let j = 1; j < c.tail.length; j++) {
+        const a = c.tail[j - 1];
+        const b = c.tail[j];
+        const t = j / c.tail.length;
+        ctx.strokeStyle = `rgba(${rgb},${0.34 * t})`;
+        ctx.lineWidth = 0.8 + t * 3.1;
+        ctx.beginPath();
+        ctx.moveTo(a.x, a.y);
+        ctx.lineTo(b.x, b.y);
+        ctx.stroke();
+      }
+      const headRadius = CFG.cometHeadSize;
+      const head = ctx.createRadialGradient(c.x, c.y, 0, c.x, c.y, headRadius);
+      head.addColorStop(0, `rgba(${rgb},0.95)`);
+      head.addColorStop(0.35, `rgba(${rgb},0.45)`);
+      head.addColorStop(1, `rgba(${rgb},0)`);
+      ctx.fillStyle = head;
+      ctx.beginPath();
+      ctx.arc(c.x, c.y, headRadius, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    for (let i = 0; i < shards.length; i++) {
+      const s = shards[i];
+      const life = Math.max(0, s.life / s.maxLife);
+      if (life <= 0) continue;
+      const alpha = Math.min(1, 0.75 * life);
+      for (let j = 1; j < s.tail.length; j++) {
+        const a = s.tail[j - 1];
+        const b = s.tail[j];
+        const t = j / s.tail.length;
+        ctx.strokeStyle = `rgba(${rgb},${0.22 * t * alpha})`;
+        ctx.lineWidth = 0.5 + t * 1.4;
+        ctx.beginPath();
+        ctx.moveTo(a.x, a.y);
+        ctx.lineTo(b.x, b.y);
+        ctx.stroke();
+      }
+      const headRadius = Math.max(2, s.size * 2.8);
+      const head = ctx.createRadialGradient(s.x, s.y, 0, s.x, s.y, headRadius);
+      head.addColorStop(0, `rgba(${rgb},${0.9 * alpha})`);
+      head.addColorStop(0.55, `rgba(${rgb},${0.38 * alpha})`);
+      head.addColorStop(1, `rgba(${rgb},0)`);
+      ctx.fillStyle = head;
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, headRadius, 0, Math.PI * 2);
+      ctx.fill();
+    }
+  }
+
   document.addEventListener('mousemove', onMouseMove, { passive: true });
   document.addEventListener('mouseleave', onMouseLeave);
   document.addEventListener('touchmove', onTouchMove, { passive: true });
@@ -140,6 +322,9 @@
   }
 
   function update() {
+    const now = performance.now();
+    const dtMs = Math.min(40, Math.max(8, now - lastUpdateTs));
+    lastUpdateTs = now;
     const mouseRadius = isMobile ? CFG.mouseRadius * 0.68 : CFG.mouseRadius;
     for (let i = 0; i < particles.length; i++) {
       const p = particles[i];
@@ -171,6 +356,7 @@
       if (p.y < -pad) p.y = H + pad;
       else if (p.y > H + pad) p.y = -pad;
     }
+    updateEffects(now, dtMs);
   }
 
   function draw() {
@@ -229,6 +415,8 @@
       }
     }
 
+    drawEffects(pr, pg, pb);
+
     const glowTarget = (mouse.active && CFG.mouseGlow && !window.__onGlassPanel) ? 1 : 0;
     glowOpacity += (glowTarget - glowOpacity) * 0.04;
     if (glowOpacity > 0.005) {
@@ -284,6 +472,8 @@
         cancelAnimationFrame(animId);
       } else {
         lastFrame = performance.now();
+        lastUpdateTs = lastFrame;
+        nextAmbientShardAt = lastFrame + rand(CFG.ambientShardIntervalMin, CFG.ambientShardIntervalMax);
         animId = requestAnimationFrame(tick);
       }
     });
@@ -297,6 +487,9 @@
 
   // Auto-start particles
   lastFrame = performance.now();
+  lastUpdateTs = lastFrame;
+  nextCometAt = lastFrame + rand(CFG.cometIntervalMin, CFG.cometIntervalMax);
+  nextAmbientShardAt = lastFrame + rand(CFG.ambientShardIntervalMin, CFG.ambientShardIntervalMax);
   animId = requestAnimationFrame(tick);
 
   // Expose a global starter in case something needs to restart

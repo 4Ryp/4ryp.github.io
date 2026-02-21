@@ -14,10 +14,8 @@
 <body>
   <canvas id="particleCanvas"></canvas>
   <div class="preloader" id="preloader">
-    <div class="preloader-inner">
-      <div class="boot-line">[ OK ] Loading system modules...</div>
-      <div class="boot-line boot-d1">[ OK ] Mounting file system...</div>
-      <div class="boot-line boot-d2">[ OK ] Initializing ryptix.sys<span class="blink">_</span></div>
+    <div class="preloader-inner" id="preloaderInner">
+      <div class="boot-line" id="preloaderGreeting">[ - ] Hello</div>
     </div>
   </div>
   <nav class="nav-hidden" id="mainNav">
@@ -179,14 +177,27 @@ Works mainly in Python and Lua.
             <span class="meter-label">DIFFICULTY</span>
             <span class="meter-bar"><span class="meter-fill meter-fill-high"></span></span>
           </div>
-          <p class="bs-text">Hasn't been completed yet.</p>
-          <p class="nobs-text">Idk.</p>
-          <div class="exhibit-tags">
-            <span class="etag">React</span>
-            <span class="etag">Node.js</span>
-            <span class="etag">WebSocket</span>
+          <p class="bs-text">This portfolio site itself is a project. Live embed below loads the actual portfolio experience.</p>
+          <p class="nobs-text">This whole site is a project. The preview is literally this portfolio.</p>
+          <div class="exhibit-preview" aria-label="Embedded project preview">
+            <div class="exhibit-preview-head">
+              <span class="preview-dot"></span>
+              <span>LIVE PREVIEW // PORTFOLIO</span>
+            </div>
+            <iframe
+              class="exhibit-preview-frame"
+              data-src="index.html?embed=1"
+              title="Portfolio embedded preview"
+              loading="lazy"
+            ></iframe>
           </div>
-          <a href="#" class="exhibit-link dossier-link">$ open case file &rarr;</a>
+          <div class="exhibit-tags">
+            <span class="etag">HTML</span>
+            <span class="etag">CSS</span>
+            <span class="etag">JavaScript</span>
+            <span class="etag">UI/UX</span>
+          </div>
+          <a href="index.html?embed=1" target="_blank" rel="noopener" class="exhibit-link dossier-link">$ open case file &rarr;</a>
         </div>
       </details>
       <details class="exhibit reveal reveal-d2">
